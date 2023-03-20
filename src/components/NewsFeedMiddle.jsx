@@ -53,6 +53,7 @@ const NewsFeedMiddle = () => {
 
   useEffect(() => {
     dispatch(getPostAction());
+    console.log("should fetch");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -254,6 +255,7 @@ const NewsFeedMiddle = () => {
           </Alert>
         )}
       </Modal>
+
       {allPosts &&
         allPosts
           .slice(Math.max(allPosts.length - 5, 0))
@@ -265,14 +267,19 @@ const NewsFeedMiddle = () => {
                   <Card id="news-feed-mid-section-lower" className="my-3">
                     <div className="d-flex flex-column mx-2 my-2">
                       <div className="d-flex">
-                        <img
-                          src={singlePost && singlePost.user.image}
-                          alt="profile"
-                          className="profile-middle m-2"
-                        ></img>
+                        {singlePost.user.image && (
+                          <img
+                            src={singlePost.user.image}
+                            alt="profile"
+                            className="profile-middle m-2"
+                          ></img>
+                        )}
                         <div>
                           <p>
-                            <strong>{singlePost.user}</strong>
+                            <strong>
+                              {singlePost.user.name}
+                              {singlePost.user.surname}
+                            </strong>
                           </p>
                           <p>
                             <em>{singlePost.user.title}</em>
