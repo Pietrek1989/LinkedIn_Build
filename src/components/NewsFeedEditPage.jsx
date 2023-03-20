@@ -18,6 +18,7 @@ const NewsFeedEditPage = () => {
   const params = useParams();
   console.log(params);
   const feedData = useSelector((state) => state.getPostsWithId.content);
+  console.log(feedData);
   const navigate = useNavigate();
   const [file, setFile] = useState();
   function handleFile(event) {

@@ -32,7 +32,10 @@ const NewsFeedMiddle = () => {
   const handleShow = () => setShow(true);
   const [post, setPost] = useState({
     text: "", // the only property you need to send
-    username: "",
+    user: "",
+    comments: [],
+    likes: [],
+    image: "",
   });
 
   const dispatch = useDispatch();
@@ -53,7 +56,8 @@ const NewsFeedMiddle = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const allPosts = useSelector((state) => state.getPosts.content);
+  const allPosts = useSelector((state) => state.getPosts.content.allPosts);
+  console.log(allPosts);
 
   return (
     <>
@@ -71,7 +75,7 @@ const NewsFeedMiddle = () => {
                 handleShow();
               }}
             >
-              <span>Start a postssssssss</span>
+              <span>Start a post</span>
             </Button>
           </div>
           <div className="d-flex justify-content-around mb-3">
@@ -177,8 +181,7 @@ const NewsFeedMiddle = () => {
                       setPost({
                         ...post,
                         text: e.target.value,
-                        username:
-                          userProfileAPIRS.name + userProfileAPIRS.surname,
+                        user: userProfileAPIRS._id,
                       });
                     }}
                   />
@@ -269,7 +272,7 @@ const NewsFeedMiddle = () => {
                         ></img>
                         <div>
                           <p>
-                            <strong>{singlePost.username}</strong>
+                            <strong>{singlePost.user}</strong>
                           </p>
                           <p>
                             <em>{singlePost.user.title}</em>

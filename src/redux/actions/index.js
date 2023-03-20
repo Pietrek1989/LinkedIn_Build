@@ -423,21 +423,24 @@ export const putUserExperience = (query, expId) => {
 export const sendPostAsyncAction = (editedData, file) => {
   return async (dispatch, getState) => {
     try {
+      console.log(editedData, file);
       let res = await fetch(`${process.env.REACT_APP_URL}/posts`, {
         method: "POST",
         body: JSON.stringify(editedData),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         },
       });
       if (res.ok) {
         const data = await res.json();
         dispatch({
           type: GET_POSTS_WITH_ID,
-          payload: data.id,
+          payload: data._id,
         });
-        dispatch(handleUploadAction(data._id, file));
+        console.log(data, file);
+        const lastElement = data.posts.slice(-1);
+        console.log(lastElement);
+        dispatch(handleUploadAction(lastElement[0], file));
       }
     } catch (error) {
       console.log(error);
@@ -447,10 +450,7 @@ export const sendPostAsyncAction = (editedData, file) => {
 export const getPostAction = () => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_URL}/posts`,
-        options
-      );
+      const response = await fetch(`${process.env.REACT_APP_URL}/posts`);
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -477,7 +477,7 @@ export const getPostWithIdAction = (query) => {
         console.log(data);
         dispatch({
           type: GET_POSTS_WITH_ID,
-          payload: data.id,
+          payload: data,
         });
       }
     } catch (error) {
@@ -601,13 +601,10 @@ export const unlikeAction = (singlePost) => {
 export function handleUploadAction(postID, file) {
   const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
   const formData = new FormData();
-  formData.append("post", file);
+  formData.append("image", file);
   fetch(baseURL, {
     method: "POST",
     body: formData,
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-    },
   })
     .then((response) => response.json())
     .then((result) => {

@@ -10,7 +10,6 @@ import { Col, Row } from "react-bootstrap";
 const LikeAndUnlike = (props) => {
   const like = useSelector((state) => state.like.like);
   const dispatch = useDispatch();
-  console.log(props.singlePost._id);
   const isLike = like.includes(props.singlePost._id);
 
   return (
