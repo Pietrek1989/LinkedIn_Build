@@ -33,7 +33,7 @@ const options = {
 //PROFILE
 export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
-    const baseEndpoint = `https://striveschool-api.herokuapp.com/api/profile/me`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182cfc78334dda7d47e705`;
     try {
       let resp = await fetch(baseEndpoint, options);
       if (resp.ok) {
@@ -103,7 +103,7 @@ export const putUserProfileApi = () => {
   };
 
   return async (dispatch, getState) => {
-    const baseEndpoint = `https://striveschool-api.herokuapp.com/api/profile/`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182cfc78334dda7d47e705`;
 
     try {
       let resp = await fetch(baseEndpoint, optionsPUT);
@@ -147,8 +147,7 @@ export const putUserProfileApi = () => {
 
 export const getUserbyId = (query) => {
   return async (dispatch, getState) => {
-    const baseEndpoint =
-      `https://striveschool-api.herokuapp.com/api/profile/` + query;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/` + query;
     try {
       let resp = await fetch(baseEndpoint, options);
       if (resp.ok) {
@@ -192,14 +191,11 @@ export const getUserbyId = (query) => {
 export const getAllProfileActionAsync = () => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/",
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
-        }
-      );
+      const response = await fetch(`${process.env.REACT_APP_URL}/users`, {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         dispatch({
@@ -231,7 +227,7 @@ export const getSpecificProfileAction = (query) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/" + query,
+        `${process.env.REACT_APP_URL}/users/` + query,
         options
       );
       if (response.ok) {
@@ -248,13 +244,12 @@ export const getSpecificProfileAction = (query) => {
   };
 };
 
-
 //EXPERIENCE
 export const getExperienceAction = (query) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${query}/experiences`,
+        `${process.env.REACT_APP_URL}/users/${query}/experiences`,
         options
       );
       if (response.ok) {
