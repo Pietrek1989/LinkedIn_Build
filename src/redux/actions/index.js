@@ -33,7 +33,7 @@ const options = {
 //PROFILE
 export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182cfc78334dda7d47e705`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182d6e72234c42ca6886b9`;
     try {
       let resp = await fetch(baseEndpoint, options);
       if (resp.ok) {
@@ -103,7 +103,7 @@ export const putUserProfileApi = () => {
   };
 
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182cfc78334dda7d47e705`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users`;
 
     try {
       let resp = await fetch(baseEndpoint, optionsPUT);
@@ -245,12 +245,12 @@ export const getSpecificProfileAction = (query) => {
 };
 
 //EXPERIENCE
+
 export const getExperienceAction = (query) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_URL}/users/${query}/experiences`,
-        options
+        `${process.env.REACT_APP_URL}/users/${query}/experiences`
       );
       if (response.ok) {
         const data = await response.json();
@@ -270,8 +270,7 @@ export const getExperienceWithExpIdAction = (query, expId) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${query}/experiences/${expId}`,
-        options
+        `${process.env.REACT_APP_URL}/users/${query}/experiences/${expId}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -304,13 +303,12 @@ export const postUserExperience = (query, query2, file) => {
   return async (dispatch, getState) => {
     try {
       let res = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${query}/experiences`,
+        `${process.env.REACT_APP_URL}/users/${query}/experiences`,
         {
           method: "POST",
           body: JSON.stringify(editedData),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
           },
         }
       );
@@ -329,7 +327,7 @@ export const postUserExperience = (query, query2, file) => {
   };
 };
 function handleUploadActionExp(expId, userProfileAPIRS, file) {
-  const baseURL = `https://striveschool-api.herokuapp.com/api/profile/${userProfileAPIRS}/experiences/${expId}/picture`;
+  const baseURL = `${process.env.REACT_APP_URL}/users/${userProfileAPIRS}/experiences/${expId}/image`;
   const formData = new FormData();
   formData.append("experience", file);
   fetch(baseURL, {
@@ -352,7 +350,7 @@ export const deleteSpecificExperienceAction = (query, expId) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${query}/experiences/${expId}`,
+        `${process.env.REACT_APP_URL}/users/${query}/experiences/${expId}`,
         {
           method: "DELETE",
           headers: {
@@ -399,7 +397,7 @@ export const putUserExperience = (query, expId) => {
   return async (dispatch, getState) => {
     try {
       let res = fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${query}/experiences/${expId}`,
+        `${process.env.REACT_APP_URL}/users/${query}/experiences/${expId}`,
         {
           method: "PUT",
           body: JSON.stringify(editedData),
@@ -425,17 +423,14 @@ export const putUserExperience = (query, expId) => {
 export const sendPostAsyncAction = (editedData, file) => {
   return async (dispatch, getState) => {
     try {
-      let res = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/`,
-        {
-          method: "POST",
-          body: JSON.stringify(editedData),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
-        }
-      );
+      let res = await fetch(`${process.env.REACT_APP_URL}/posts`, {
+        method: "POST",
+        body: JSON.stringify(editedData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        },
+      });
       if (res.ok) {
         const data = await res.json();
         dispatch({
@@ -449,12 +444,11 @@ export const sendPostAsyncAction = (editedData, file) => {
     }
   };
 };
-
 export const getPostAction = () => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts`,
+        `${process.env.REACT_APP_URL}/posts`,
         options
       );
       if (response.ok) {
@@ -475,7 +469,7 @@ export const getPostWithIdAction = (query) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${query}`,
+        `${process.env.REACT_APP_URL}/posts/${query}`,
         options
       );
       if (response.ok) {
@@ -500,17 +494,14 @@ export const putPostAction = (postId) => {
 
   return async (dispatch, getState) => {
     try {
-      let res = fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${postId}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(editedData),
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          }),
-        }
-      );
+      let res = fetch(`${process.env.REACT_APP_URL}/posts/${postId}`, {
+        method: "PUT",
+        body: JSON.stringify(editedData),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        }),
+      });
       if (res.ok) {
         dispatch({
           type: PUT_POSTS,
@@ -528,7 +519,7 @@ export const deletePostAction = (query) => {
   return async (dispatch, getState) => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${query}`,
+        `${process.env.REACT_APP_URL}/posts/${query}`,
         {
           method: "DELETE",
           headers: {
@@ -552,7 +543,7 @@ export const postExpImageAction = (userId, expId) => {
   return async (dispatch, getState) => {
     try {
       let res = fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences/${expId}/picture`,
+        `${process.env.REACT_APP_URL}/users/${userId}/experiences/${expId}/image`,
         {
           method: "POST",
           body: JSON.stringify(expImage),
@@ -575,17 +566,14 @@ export const addPostImageAction = (postId) => {
   const postImage = {};
   return async (dispatch, getState) => {
     try {
-      let res = fetch(
-        ` https://striveschool-api.herokuapp.com/api/posts/${postId}`,
-        {
-          method: "POST",
-          body: JSON.stringify(postImage),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
-        }
-      );
+      let res = fetch(` ${process.env.REACT_APP_URL}/posts/${postId}/image`, {
+        method: "POST",
+        body: JSON.stringify(postImage),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        },
+      });
       if (res.ok) {
         console.log("sending");
       }
@@ -611,7 +599,7 @@ export const unlikeAction = (singlePost) => {
 };
 
 export function handleUploadAction(postID, file) {
-  const baseURL = `https://striveschool-api.herokuapp.com/api/posts/${postID}`;
+  const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
   const formData = new FormData();
   formData.append("post", file);
   fetch(baseURL, {

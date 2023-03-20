@@ -71,7 +71,7 @@ const NewsFeedMiddle = () => {
                 handleShow();
               }}
             >
-              <span>Start a post</span>
+              <span>Start a postssssssss</span>
             </Button>
           </div>
           <div className="d-flex justify-content-around mb-3">

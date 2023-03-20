@@ -65,15 +65,12 @@ const Experience = () => {
   };
 
   function handleUpload(expId) {
-    const baseURL = `https://striveschool-api.herokuapp.com/api/profile/${userProfileAPIRS._id}/experiences/${expId}/picture`;
+    const baseURL = `${process.env.REACT_APP_URL}/users/${userProfileAPIRS._id}/experiences/${expId}/image`;
     const formData = new FormData();
-    formData.append("experience", file);
+    formData.append("image", file);
     fetch(baseURL, {
       method: "POST",
       body: formData,
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-      },
     })
       .then((response) => response.json())
       .then((result) => {
@@ -167,7 +164,7 @@ const Experience = () => {
                   <p
                     className="mb-0"
                     onClick={() =>
-                      navigate(`/${data.user}/experiences/${data._id}`)
+                      navigate(`/${data.userId}/experiences/${data._id}`)
                     }
                   >
                     <BiPencil id="analytics-icons"></BiPencil>
