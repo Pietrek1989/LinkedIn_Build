@@ -1,0 +1,123 @@
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+.comment-author {
+  font-size: 1.4rem;
+}
+.comment-header {
+  display: flex;
+  align-items: center;
+}
+
+.comment-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.comment-header .comment-author {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.comment-header .comment-time {
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+.comment-body {
+  margin-bottom: 8px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  width: 80%;
+}
+
+.comment-body .comment-text {
+  font-size: 14px;
+}
+
+.comment-footer {
+  display: flex;
+}
+
+.comment-footer button {
+  font-size: 12px;
+  padding: 0 16px;
+  border: none;
+  background-color: transparent;
+  color: #8e8e8e;
+  cursor: pointer;
+}
+
+.comment-footer button:hover {
+  color: #0a66c2;
+}
+
+.like-comment {
+  width: 1.5em !important;
+}
+.add-comment-container {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 24px;
+}
+
+.add-comment-container img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.add-comment-input-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.add-comment-input-container input[type="text"] {
+  font-size: 14px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 24px;
+  background-color: #f3f2ef;
+  margin-bottom: 8px;
+}
+
+.add-comment-input-container input[type="text"]:focus {
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.05);
+}
+
+.add-comment-input-container button.add-comment-button {
+  font-size: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 24px;
+  background-color: #0a66c2;
+  color: #ffffff;
+  cursor: pointer;
+  width: 5em !important;
+}
+
+.add-comment-input-container button.add-comment-button:hover {
+  background-color: #004182;
+}
+
+.comments-container {
+  max-height: 0 !important;
+  overflow: hidden !important;
+  transition: max-height 0.6s ease-out !important;
+}
+
+.comments-container.open {
+  max-height: 1000px !important; /* or whatever max height you want */
+  transition: max-height 0.6s ease-out !important;
+  overflow: auto !important;
+}

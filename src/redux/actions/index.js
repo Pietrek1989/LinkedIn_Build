@@ -22,6 +22,7 @@ export const POST_IMAGE_TO_POST = "POST_IMAGE_TO_POST";
 export const LIKE = "LIKE";
 export const UNLIKE = "UNLIKE";
 export const TOGGLE_SHOW = "TOGGLE_SHOW";
+export const GET_COMMENTS = "GET_COMMENTS";
 
 const options = {
   method: "GET",
@@ -254,7 +255,6 @@ export const getExperienceAction = (query) => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         dispatch({
           type: GET_EXPERIENCE,
           payload: data,
@@ -644,5 +644,52 @@ export function handleUploadAction(postID, file) {
 export const toggleShow = () => {
   return {
     type: TOGGLE_SHOW,
+  };
+};
+
+export const sendCommentAsyncAction = (editedData) => {
+  return async (dispatch, getState) => {
+    try {
+      console.log(editedData);
+      let res = await fetch(
+        `${process.env.REACT_APP_URL}/posts/${editedData.post}/comments`,
+        {
+          method: "POST",
+          body: JSON.stringify(editedData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // if (res.ok) {
+      //   const data = await res.json();
+      //   dispatch({
+      //     type: GET_COMMENTS,
+      //     payload: data,
+      //   });
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getAllComments = (postId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_URL}/posts/${postId}/comments`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch({
+          type: GET_COMMENTS,
+          payload: data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

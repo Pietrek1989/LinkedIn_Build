@@ -4,22 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import {
   deletePostAction,
   getPostAction,
+  sendCommentAsyncAction,
   sendPostAsyncAction,
 } from "../redux/actions";
 import format from "date-fns/format";
 import { parseISO } from "date-fns";
 import { useNavigate } from "react-router-dom";
-
 import LikeAndUnlike from "./LikeAndUnlike";
 import { BsUpload } from "react-icons/bs";
 
 const NewsFeedMiddle = () => {
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
-  //   const thePostId = useSelector((state) => state.getPostsWithId.content);
 
   const [show, setShow] = useState(false);
+
   const [file, setFile] = useState();
-  //   const [changed, setChanged] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const handleCloseSuccessful = () => setSuccessful(false);
   const handleShowSuccessful = () => setSuccessful(true);
@@ -186,23 +185,9 @@ const NewsFeedMiddle = () => {
                       });
                     }}
                   />
-                  {/* <input
-                    style={{ display: "none" }}
-                    ref={inputRef}
-                    type="file"
-                    name="file"
-                    onChange={handleFile}
-                  />
-                  <Button
-                    id="profile-pic-update-buttons text-dark"
-                    className="p-2"
-                    onClick={handleClick}
-                  >
-                    <BsUpload></BsUpload>
-                    <p className="mb-0">UPLOAD</p>
-                  </Button> */}
+
                   <label className="form-label" htmlFor="textAreaExample">
-                    <p className="mb-5 pb-5">Post content!</p>
+                    <p className="mb-5 pb-5">Post Content!</p>
                   </label>
                 </Form.Group>
               </Form>
@@ -328,6 +313,7 @@ const NewsFeedMiddle = () => {
                     <LikeAndUnlike
                       singlePost={singlePost}
                       i={i}
+                      currentUser={userProfileAPIRS}
                     ></LikeAndUnlike>
                   </Card>
                 </Col>
