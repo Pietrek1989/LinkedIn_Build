@@ -584,17 +584,43 @@ export const addPostImageAction = (postId) => {
 };
 
 // Favourite
-export const likeAction = (singlePost) => {
+export const likeAction = (postId, userId) => {
+  const uId = {
+    userId,
+  };
+  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/LikeDislike`, {
+    method: "PUT",
+    body: JSON.stringify(uId),
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data.likesCount))
+    .catch((err) => console.error(err));
   return {
     type: LIKE,
-    payload: singlePost,
+    payload: postId,
   };
 };
 
-export const unlikeAction = (singlePost) => {
+export const unlikeAction = (postId, userId) => {
+  const uId = {
+    userId,
+  };
+  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/LikeDislike`, {
+    method: "PUT",
+    body: JSON.stringify(uId),
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data.likesCount))
+    .catch((err) => console.error(err));
   return {
     type: UNLIKE,
-    payload: singlePost,
+    payload: postId,
   };
 };
 

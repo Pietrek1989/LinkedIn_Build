@@ -20,7 +20,9 @@ const LikeAndUnlike = (props) => {
             <button
               className="comment-box-btn ml-3"
               onClick={() => {
-                dispatch(unlikeAction(props.singlePost._id));
+                dispatch(
+                  unlikeAction(props.singlePost._id, process.env.REACT_APP_USER)
+                );
               }}
             >
               <AiTwotoneLike className="comment-box-btn-icon  mr-1" />
@@ -30,7 +32,9 @@ const LikeAndUnlike = (props) => {
             <button
               className="comment-box-btn ml-3"
               onClick={() => {
-                dispatch(likeAction(props.singlePost._id));
+                dispatch(
+                  likeAction(props.singlePost._id, process.env.REACT_APP_USER)
+                );
               }}
             >
               <AiOutlineLike className="comment-box-btn-icon  mr-1" />
