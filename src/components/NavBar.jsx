@@ -46,9 +46,8 @@ const NavBar = () => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    console.log(allProfiles[0]);
     // handleShowModal();
-    dispatch(getSearchResultActionAsync(allProfiles[0], searchValue));
+    dispatch(getSearchResultActionAsync(allProfiles[0].allUsers, searchValue));
     document.querySelector("#search-popup").style.display = "block";
   };
 
@@ -129,12 +128,11 @@ const NavBar = () => {
                   <li
                     className="py-2"
                     key={oneResult._id}
-                    onClick={() =>
-                      dispatch(getUserbyId(oneResult._id))(
-                        (document.querySelector("#search-popup").style.display =
-                          "none")
-                      )
-                    }
+                    onClick={() => {
+                      dispatch(getUserbyId(oneResult._id));
+                      document.querySelector("#search-popup").style.display =
+                        "none";
+                    }}
                   >
                     {" "}
                     <i className="bi bi-search"></i>
@@ -342,8 +340,8 @@ const NavBar = () => {
                     focusable="false"
                     id="myBtn"
                     onClick={() =>
-                    (document.getElementById("myModal").style.display =
-                      "block")
+                      (document.getElementById("myModal").style.display =
+                        "block")
                     }
                   >
                     <path d="M8 11L3 6h10z" fillRule="evenodd"></path>
@@ -371,8 +369,8 @@ const NavBar = () => {
                   <span
                     className="close"
                     onClick={() =>
-                    (document.getElementById("myModal").style.display =
-                      "none")
+                      (document.getElementById("myModal").style.display =
+                        "none")
                     }
                   >
                     &times;

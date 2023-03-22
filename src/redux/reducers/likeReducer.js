@@ -16,6 +16,7 @@ const likeReducer = (state = initialState, action) => {
         ...state,
         like: state.like.filter((fav) => fav !== action.payload),
       };
+
     default:
       return state;
   }

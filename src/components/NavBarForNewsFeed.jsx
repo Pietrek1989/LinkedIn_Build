@@ -41,9 +41,8 @@ const NavBarForNewsFeed = () => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    console.log(allProfiles[0]);
     // handleShowModal();
-    dispatch(getSearchResultActionAsync(allProfiles[0], searchValue));
+    dispatch(getSearchResultActionAsync(allProfiles[0].allUsers, searchValue));
     document.querySelector("#search-popup").style.display = "block";
   };
 
@@ -113,12 +112,11 @@ const NavBarForNewsFeed = () => {
                   <li
                     className="py-2"
                     key={oneResult._id}
-                    onClick={() =>
-                      dispatch(getUserbyId(oneResult._id))(
-                        (document.querySelector("#search-popup").style.display =
-                          "none")
-                      )
-                    }
+                    onClick={() => {
+                      dispatch(getUserbyId(oneResult._id));
+                      document.querySelector("#search-popup").style.display =
+                        "none";
+                    }}
                   >
                     {" "}
                     <i className="bi bi-search"></i>

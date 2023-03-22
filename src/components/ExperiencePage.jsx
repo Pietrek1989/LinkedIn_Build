@@ -35,7 +35,9 @@ const ExperiencePage = () => {
         <Row className="mt-5 pt-5">
           <Col lg={9}>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">Role</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                Role
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.role}
                 aria-label=""
@@ -44,17 +46,20 @@ const ExperiencePage = () => {
               />
             </InputGroup>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">Company</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                Company
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.company}
                 aria-label="Company"
                 aria-describedby="basic-addon1"
                 id="put-experience-company"
-
               />
             </InputGroup>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">Start Date</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                Start Date
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.startDate}
                 aria-label="Username"
@@ -64,7 +69,9 @@ const ExperiencePage = () => {
               />
             </InputGroup>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">End Date</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                End Date
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.endDate}
                 aria-label="Username"
@@ -74,7 +81,9 @@ const ExperiencePage = () => {
               />
             </InputGroup>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">Description</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                Description
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.description}
                 aria-label="Username"
@@ -83,7 +92,9 @@ const ExperiencePage = () => {
               />
             </InputGroup>
             <InputGroup className="mb-3 px-4">
-              <InputGroup.Text id="basic-addon1" className="experience-layout">Location</InputGroup.Text>
+              <InputGroup.Text id="basic-addon1" className="experience-layout">
+                Location
+              </InputGroup.Text>
               <Form.Control
                 placeholder={singleExpData.area}
                 aria-label="Username"
@@ -95,7 +106,7 @@ const ExperiencePage = () => {
               variant="primary"
               onClick={() => {
                 dispatch(
-                  putUserExperience(singleExpData.user, singleExpData._id)
+                  putUserExperience(singleExpData.userId, singleExpData._id)
                 );
                 navigate("/");
               }}

@@ -4,22 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import {
   deletePostAction,
   getPostAction,
+  sendCommentAsyncAction,
   sendPostAsyncAction,
 } from "../redux/actions";
 import format from "date-fns/format";
 import { parseISO } from "date-fns";
 import { useNavigate } from "react-router-dom";
-
 import LikeAndUnlike from "./LikeAndUnlike";
 import { BsUpload } from "react-icons/bs";
 
 const NewsFeedMiddle = () => {
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
-  //   const thePostId = useSelector((state) => state.getPostsWithId.content);
 
   const [show, setShow] = useState(false);
+
   const [file, setFile] = useState();
-  //   const [changed, setChanged] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const handleCloseSuccessful = () => setSuccessful(false);
   const handleShowSuccessful = () => setSuccessful(true);
@@ -32,7 +31,10 @@ const NewsFeedMiddle = () => {
   const handleShow = () => setShow(true);
   const [post, setPost] = useState({
     text: "", // the only property you need to send
-    username: "",
+    user: "",
+    comments: [],
+    likes: [],
+    image: "",
   });
 
   const dispatch = useDispatch();
@@ -50,10 +52,12 @@ const NewsFeedMiddle = () => {
 
   useEffect(() => {
     dispatch(getPostAction());
+    console.log("should fetch");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const allPosts = useSelector((state) => state.getPosts.content);
+  const allPosts = useSelector((state) => state.getPosts.content.allPosts);
+  console.log(allPosts);
 
   return (
     <>
@@ -177,28 +181,13 @@ const NewsFeedMiddle = () => {
                       setPost({
                         ...post,
                         text: e.target.value,
-                        username:
-                          userProfileAPIRS.name + userProfileAPIRS.surname,
+                        user: userProfileAPIRS._id,
                       });
                     }}
                   />
-                  {/* <input
-                    style={{ display: "none" }}
-                    ref={inputRef}
-                    type="file"
-                    name="file"
-                    onChange={handleFile}
-                  />
-                  <Button
-                    id="profile-pic-update-buttons text-dark"
-                    className="p-2"
-                    onClick={handleClick}
-                  >
-                    <BsUpload></BsUpload>
-                    <p className="mb-0">UPLOAD</p>
-                  </Button> */}
+
                   <label className="form-label" htmlFor="textAreaExample">
-                    <p className="mb-5 pb-5">Post content!</p>
+                    <p className="mb-5 pb-5">Post Content!</p>
                   </label>
                 </Form.Group>
               </Form>
@@ -251,6 +240,7 @@ const NewsFeedMiddle = () => {
           </Alert>
         )}
       </Modal>
+
       {allPosts &&
         allPosts
           .slice(Math.max(allPosts.length - 5, 0))
@@ -262,14 +252,19 @@ const NewsFeedMiddle = () => {
                   <Card id="news-feed-mid-section-lower" className="my-3">
                     <div className="d-flex flex-column mx-2 my-2">
                       <div className="d-flex">
-                        <img
-                          src={singlePost && singlePost.user.image}
-                          alt="profile"
-                          className="profile-middle m-2"
-                        ></img>
+                        {singlePost.user.image && (
+                          <img
+                            src={singlePost.user.image}
+                            alt="profile"
+                            className="profile-middle m-2"
+                          ></img>
+                        )}
                         <div>
                           <p>
-                            <strong>{singlePost.username}</strong>
+                            <strong>
+                              {singlePost.user.name}
+                              {singlePost.user.surname}
+                            </strong>
                           </p>
                           <p>
                             <em>{singlePost.user.title}</em>
@@ -318,6 +313,7 @@ const NewsFeedMiddle = () => {
                     <LikeAndUnlike
                       singlePost={singlePost}
                       i={i}
+                      currentUser={userProfileAPIRS}
                     ></LikeAndUnlike>
                   </Card>
                 </Col>
