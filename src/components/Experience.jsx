@@ -36,12 +36,6 @@ const Experience = () => {
 
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
   console.log(userProfileAPIRS);
-
-  const userExperiencesAPIRS = useSelector(
-    (state) => state.getExperience.content
-  );
-  console.log(userExperiencesAPIRS);
-
   useEffect(() => {
     dispatch(getExperienceAction(userProfileAPIRS._id));
     setChanged(false);
@@ -49,6 +43,11 @@ const Experience = () => {
   useEffect(() => {
     dispatch(getExperienceAction(userProfileAPIRS._id));
   }, [userProfileAPIRS]);
+  const userExperiencesAPIRS = useSelector(
+    (state) => state.getExperience.content
+  );
+  console.log(userExperiencesAPIRS);
+
   //image upload to the experiences
 
   const [file, setFile] = useState();

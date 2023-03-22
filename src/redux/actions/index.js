@@ -26,17 +26,15 @@ export const GET_COMMENTS = "GET_COMMENTS";
 
 const options = {
   method: "GET",
-  headers: {
-    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-  },
 };
 
 //PROFILE
 export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}`;
     try {
-      let resp = await fetch(baseEndpoint, options);
+      let resp = await fetch(
+        `http://localhost:3001/api/users/64182d6e72234c42ca6886b9`
+      );
       if (resp.ok) {
         dispatch({
           type: GET_USER_LOADING,
@@ -98,7 +96,6 @@ export const putUserProfileApi = () => {
     method: "PUT",
     headers: new Headers({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
     }),
     body: JSON.stringify(editedData),
   };
@@ -192,11 +189,7 @@ export const getUserbyId = (query) => {
 export const getAllProfileActionAsync = () => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_URL}/users`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-        },
-      });
+      const response = await fetch(`${process.env.REACT_APP_URL}/users`, {});
       if (response.ok) {
         const data = await response.json();
         dispatch({
@@ -250,9 +243,10 @@ export const getSpecificProfileAction = (query) => {
 export const getExperienceAction = (query) => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_URL}/users/${query}/experiences`
-      );
+      const url = query
+        ? `${process.env.REACT_APP_URL}/users/${query}/experiences`
+        : `${process.env.REACT_APP_URL}/users/64182d6e72234c42ca6886b9/experiences`;
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         dispatch({
@@ -333,9 +327,6 @@ function handleUploadActionExp(expId, userProfileAPIRS, file) {
   fetch(baseURL, {
     method: "POST",
     body: formData,
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-    },
   })
     .then((response) => response.json())
     .then((result) => {
@@ -353,9 +344,7 @@ export const deleteSpecificExperienceAction = (query, expId) => {
         `${process.env.REACT_APP_URL}/users/${query}/experiences/${expId}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
+          headers: {},
         }
       );
       if (response.ok) {
@@ -403,7 +392,6 @@ export const putUserExperience = (query, expId) => {
           body: JSON.stringify(editedData),
           headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
           }),
         }
       );
@@ -499,7 +487,6 @@ export const putPostAction = (postId) => {
         body: JSON.stringify(editedData),
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         }),
       });
       if (res.ok) {
@@ -522,9 +509,6 @@ export const deletePostAction = (query) => {
         `${process.env.REACT_APP_URL}/posts/${query}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
         }
       );
       if (response.ok) {
@@ -549,7 +533,6 @@ export const postExpImageAction = (userId, expId) => {
           body: JSON.stringify(expImage),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
           },
         }
       );
@@ -571,7 +554,6 @@ export const addPostImageAction = (postId) => {
         body: JSON.stringify(postImage),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         },
       });
       if (res.ok) {
