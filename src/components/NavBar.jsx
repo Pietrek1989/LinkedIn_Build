@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserbyId, toggleShow } from "../redux/actions";
+import { getUserbyId, sendUnsend, toggleShow } from "../redux/actions";
 import {
   getAllProfileActionAsync,
   getSearchResultActionAsync,
@@ -70,6 +70,10 @@ const NavBar = () => {
   const handleToggleShow = () => {
     dispatch(toggleShow());
   };
+
+  const sendRequest=()=>{
+    dispatch(sendUnsend())
+  }
   // search function
   //   const specificProfile = useSelector((state) => state.profileSearch.content);
   //   const [query, setQuery] = useState("");
@@ -131,7 +135,7 @@ const NavBar = () => {
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
                   <>
-                   <BsUpload onClick={()=>console.log("hello")}/>
+                   <BsUpload onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}/>
 
                   <li
                  
