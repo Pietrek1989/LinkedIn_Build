@@ -714,7 +714,12 @@ export const sendUnsend=(senderId,RecieverId)=>{
           type: SEND,
           payload: data,
         })
-      }
+      
+      dispatch({
+        type:RECIEVE,
+        payload: data,
+      })
+    }
     }catch(err){
       console.log(err)
     }

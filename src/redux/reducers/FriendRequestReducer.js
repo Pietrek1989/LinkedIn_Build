@@ -12,21 +12,21 @@ const likeReducer = (state = initialState, action) => {
         ...state,
         Sent: [...state.Sent, action.payload],
       };
-    //   case UNSEND:
-    //     return {
-    //       ...state,
-    //       Sent: [...state.Sent.filter((fav) => fav !== action.payload)],
-    //     };
+      case UNSEND:
+        return {
+          ...state,
+          Sent: [...state.Sent.filter((fav) => fav !== action.payload)],
+        };
         case RECIEVE:
       return {
         ...state,
         Recieved: [...state.Recieved, action.payload],
       };
-    // case UNRECIEVE:
-    //   return {
-    //     ...state,
-    //     Recieved: state.Recieved.filter((fav) => fav !== action.payload),
-    //   };
+    case UNRECIEVE:
+      return {
+        ...state,
+        Recieved: state.Recieved.filter((fav) => fav !== action.payload),
+      };
 
     default:
       return state;
