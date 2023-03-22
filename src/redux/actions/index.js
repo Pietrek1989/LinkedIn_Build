@@ -588,8 +588,8 @@ export const likeAction = (postId, userId) => {
   const uId = {
     userId,
   };
-  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/LikeDislike`, {
-    method: "PUT",
+  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/like`, {
+    method: "POST",
     body: JSON.stringify(uId),
     headers: new Headers({
       "Content-Type": "application/json",
@@ -608,8 +608,8 @@ export const unlikeAction = (postId, userId) => {
   const uId = {
     userId,
   };
-  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/LikeDislike`, {
-    method: "PUT",
+  fetch(`${process.env.REACT_APP_URL}/posts/${postId}/dislike`, {
+    method: "DELETE",
     body: JSON.stringify(uId),
     headers: new Headers({
       "Content-Type": "application/json",

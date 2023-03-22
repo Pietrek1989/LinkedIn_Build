@@ -14,28 +14,17 @@ import {
 } from "../redux/actions";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import "../styles/likeAndUnlike.css";
 
 const LikeAndUnlike = (props) => {
-  // const like = useSelector((state) => state.like.like);
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   useEffect(() => {
-    // console.log(props.singlePost._id);
-    // dispatch(getAllComments(props.singlePost._id));
     dispatch(getPostWithIdAction(props.singlePost._id));
+    // eslint-disable-next-line
   }, [props.singlePost]);
-  // const commentsOfSelectedPost = useSelector((state) => state.comment.content);
-  // console.log(commentsOfSelectedPost);
-  const currentPost = useSelector((state) => state.getPostsWithId.content);
-  const isLike2 = currentPost.likes?.some(
+  const isLike2 = props.singlePost.likes?.some(
     (like) => like === props.currentUser._id
   );
-  console.log(currentPost);
-  console.log(isLike2);
-  console.log(props.currentUser._id);
-
   const [comment, setComment] = useState({
     user: "",
     comment: "",
@@ -62,7 +51,7 @@ const LikeAndUnlike = (props) => {
           data-test-reactions-icon-theme="light"
         />
         <span onClick={handleLikeToggle}>
-          {currentPost.likes && currentPost.likes.length} Likes
+          {props.singlePost.likes && props.singlePost.likes.length} Likes
         </span>
       </p>
       <Row className="justify-content-center align-items-center">
@@ -72,26 +61,26 @@ const LikeAndUnlike = (props) => {
               className="comment-box-btn ml-3"
               onClick={() => {
                 dispatch(
-                  likeAction(props.singlePost._id, props.currentUser._id)
+                  unlikeAction(props.singlePost._id, props.currentUser._id)
                 );
                 dispatch(getPostWithIdAction(props.singlePost._id));
               }}
             >
               <AiTwotoneLike className="comment-box-btn-icon  mr-1" />
-              Like
+              Dislike
             </button>
           ) : (
             <button
               className="comment-box-btn ml-3"
               onClick={() => {
                 dispatch(
-                  unlikeAction(props.singlePost._id, props.currentUser._id)
+                  likeAction(props.singlePost._id, props.currentUser._id)
                 );
                 dispatch(getPostWithIdAction(props.singlePost._id));
               }}
             >
               <AiOutlineLike className="comment-box-btn-icon  mr-1" />
-              Unlike
+              Like
             </button>
           )}
         </Col>
@@ -125,8 +114,8 @@ const LikeAndUnlike = (props) => {
           <div className="d-flex flex-column mx-2 my-2">
             <ul>
               <strong>
-                {currentPost.likes &&
-                  currentPost.likes.map((singleLike, index) => {
+                {props.singlePost.likes &&
+                  props.singlePost.likes.map((singleLike, index) => {
                     return (
                       <li>
                         {singleLike.name && singleLike.name}{" "}
