@@ -22,9 +22,6 @@ const LikeAndUnlike = (props) => {
     dispatch(getPostWithIdAction(props.singlePost._id));
     // eslint-disable-next-line
   }, [props.singlePost]);
-  const isLike2 = props.singlePost.likes?.some(
-    (like) => like === props.currentUser._id
-  );
   const [comment, setComment] = useState({
     user: "",
     comment: "",
@@ -32,6 +29,12 @@ const LikeAndUnlike = (props) => {
   });
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [likesSection, setLikesSection] = useState(false);
+  const currentPost = useSelector(
+    (state) => state.getPosts.content.allPosts
+  ).find((p) => p._id === props.singlePost._id);
+  const isLike2 = props.singlePost.likes?.some(
+    (like) => like === props.currentUser._id
+  );
 
   const handleLikeToggle = () => {
     setLikesSection(!likesSection);
@@ -114,12 +117,11 @@ const LikeAndUnlike = (props) => {
           <div className="d-flex flex-column mx-2 my-2">
             <ul>
               <strong>
-                {props.singlePost.likes &&
-                  props.singlePost.likes.map((singleLike, index) => {
+                {currentPost.likes &&
+                  currentPost.likes.map((singleLike) => {
                     return (
                       <li>
-                        {singleLike.name && singleLike.name}{" "}
-                        {singleLike.surname && singleLike.surname},
+                        {singleLike?.name} {singleLike?.surname}
                       </li>
                     );
                   })}
