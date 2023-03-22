@@ -121,7 +121,7 @@ const LikeAndUnlike = (props) => {
                   props.singlePost.likes.map((singleLike, index) => {
                     return (
                       <li key={index}>
-                        {singleLike.name && singleLike.name}
+                        {singleLike.name && singleLike.name}{" "}
                         {singleLike.surname && singleLike.surname}
                       </li>
                     );
