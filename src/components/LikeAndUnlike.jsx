@@ -150,7 +150,7 @@ const LikeAndUnlike = (props) => {
                     setComment({
                       ...comment,
                       comment: e.target.value,
-                      user: props.singlePost.user._id,
+                      user: props.currentUser._id,
                       post: props.singlePost._id,
                     });
                   }}
