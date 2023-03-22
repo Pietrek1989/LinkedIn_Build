@@ -7,67 +7,91 @@ import { AiTwotoneLike } from "react-icons/ai";
 import {
   getAllComments,
   getPostAction,
+  getPostWithIdAction,
   likeAction,
   sendCommentAsyncAction,
   unlikeAction,
 } from "../redux/actions";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import "../styles/likeAndUnlike.css";
 
 const LikeAndUnlike = (props) => {
-  const like = useSelector((state) => state.like.like);
+  // const like = useSelector((state) => state.like.like);
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   useEffect(() => {
-    console.log(props.singlePost._id);
-    dispatch(getAllComments(props.singlePost._id));
+    // console.log(props.singlePost._id);
+    // dispatch(getAllComments(props.singlePost._id));
+    dispatch(getPostWithIdAction(props.singlePost._id));
   }, [props.singlePost]);
-  const commentsOfSelectedPost = useSelector((state) => state.comment.content);
+  // const commentsOfSelectedPost = useSelector((state) => state.comment.content);
+  // console.log(commentsOfSelectedPost);
+  const currentPost = useSelector((state) => state.getPostsWithId.content);
+  const isLike2 = currentPost.likes.some(
+    (like) => like._id === props.currentUser._id
+  );
+  console.log(currentPost);
+  console.log(isLike2);
+  console.log(props.currentUser._id);
 
-  const isLike = like.includes(props.singlePost._id);
-  // const [showComment, setShowComment] = useState(false);
-  // const handleCommentOpen = () => setShowComment(true);
-  // const handleCommentClose = () => setShowComment(false);
   const [comment, setComment] = useState({
     user: "",
     comment: "",
     post: "",
   });
-  const [showCommentSection, setShowCommentSection] = useState(false); // add state variable
+  const [showCommentSection, setShowCommentSection] = useState(false);
+  const [likesSection, setLikesSection] = useState(false);
 
+  const handleLikeToggle = () => {
+    setLikesSection(!likesSection);
+  };
   const handleCommentToggle = () => {
-    setShowCommentSection(!showCommentSection); // toggle state variable on click
+    setShowCommentSection(!showCommentSection);
   };
 
   return (
     <div className="card-footer p-0">
+      <p className="likes-paragraph">
+        <img
+          className="like-comment"
+          src="https://static.licdn.com/sc/h/8ekq8gho1ruaf8i7f86vd1ftt"
+          alt="like"
+          data-test-reactions-icon-type="LIKE"
+          data-test-reactions-icon-theme="light"
+        />
+        <span onClick={handleLikeToggle}>
+          {currentPost.likes && currentPost.likes.length} Likes
+        </span>
+      </p>
       <Row className="justify-content-center align-items-center">
         <Col className="text-center comment-box pt-2">
-          {isLike ? (
+          {isLike2 ? (
             <button
               className="comment-box-btn ml-3"
               onClick={() => {
                 dispatch(
-                  unlikeAction(props.singlePost._id, process.env.REACT_APP_USER)
+                  likeAction(props.singlePost._id, props.currentUser._id)
                 );
+                dispatch(getPostWithIdAction(props.singlePost._id));
               }}
             >
               <AiTwotoneLike className="comment-box-btn-icon  mr-1" />
-              Unlike
+              Like
             </button>
           ) : (
             <button
               className="comment-box-btn ml-3"
               onClick={() => {
                 dispatch(
-                  likeAction(props.singlePost._id, process.env.REACT_APP_USER)
+                  unlikeAction(props.singlePost._id, props.currentUser._id)
                 );
+                dispatch(getPostWithIdAction(props.singlePost._id));
               }}
             >
               <AiOutlineLike className="comment-box-btn-icon  mr-1" />
-              Like
+              Unlike
             </button>
           )}
         </Col>
@@ -88,80 +112,38 @@ const LikeAndUnlike = (props) => {
           </button>
         </Col>
       </Row>
-      {/* <Modal
-        show={showComment}
-        onHide={handleCommentClose}
+      <Modal
+        show={likesSection}
+        onHide={handleCommentToggle}
         animation={false}
         id="modal-post-news"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create a Comment</Modal.Title>
+          <Modal.Title>All the likes</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column mx-2 my-2">
-            <div className="d-flex">
-              <img
-                src={props.singlePost && props.singlePost.user.image}
-                alt="profile"
-                className="profile-middle m-2"
-              ></img>
-              <div>
-                <p>
-                  <strong>
-                    {props.singlePost && props.singlePost.user.name}{" "}
-                    {props.singlePost && props.singlePost.user.surname}
-                  </strong>
-                </p>
-              </div>
-            </div>
-            <div className="form-outline">
-              <Form>
-                <Form.Group className="form-outline">
-                  <br></br>
-                  <Form.Control
-                    id="textAreaExample"
-                    as="textarea"
-                    rows={5}
-                    value={comment.comment}
-                    onChange={(e) => {
-                      setComment({
-                        ...comment,
-                        comment: e.target.value,
-                        user: props.singlePost.user._id,
-                        post: props.singlePost._id,
-                      });
-                    }}
-                  />
-
-                  <label className="form-label" htmlFor="textAreaExample">
-                    <p className="mb-5 pb-5">Write a Comment!</p>
-                  </label>
-                </Form.Group>
-              </Form>
-            </div>
+            <ul>
+              <strong>
+                {currentPost.likes &&
+                  currentPost.likes.map((singleLike, index) => {
+                    return (
+                      <li>
+                        {singleLike.name && singleLike.name}{" "}
+                        {singleLike.surname && singleLike.surname},
+                      </li>
+                    );
+                  })}
+              </strong>
+            </ul>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCommentClose}>
+          <Button variant="secondary" onClick={handleLikeToggle}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              dispatch(sendCommentAsyncAction(comment));
-              dispatch(getAllComments(props.singlePost._id));
-              handleCommentClose();
-              navigate("/feed");
-              setComment({ comment: "" });
-              handleCommentOpen();
-              dispatch(getPostAction());
-              //   dispatch(getPostAction());
-            }}
-          >
-            POST
-          </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
       <div className={`comments-container ${showCommentSection ? "open" : ""}`}>
         {showCommentSection && (
           <div>

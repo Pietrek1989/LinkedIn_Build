@@ -117,7 +117,19 @@
 }
 
 .comments-container.open {
-  max-height: 1000px !important; /* or whatever max height you want */
+  max-height: 1000px !important;
   transition: max-height 0.6s ease-out !important;
   overflow: auto !important;
+}
+
+.likes-paragraph {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 500px;
+  font-size: 0.7em;
+}
+
+.likes-paragraph span {
+  font-size: 1em;
 }

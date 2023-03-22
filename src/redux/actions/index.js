@@ -34,7 +34,7 @@ const options = {
 //PROFILE
 export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users/64182d6e72234c42ca6886b9`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}`;
     try {
       let resp = await fetch(baseEndpoint, options);
       if (resp.ok) {
