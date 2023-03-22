@@ -35,6 +35,7 @@ const Experience = () => {
   const handleShowSuccessful = () => setSuccessful(true);
 
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
+  console.log("user: ", userProfileAPIRS);
   console.log(userProfileAPIRS);
   useEffect(() => {
     dispatch(getExperienceAction(userProfileAPIRS._id));
@@ -46,7 +47,6 @@ const Experience = () => {
   const userExperiencesAPIRS = useSelector(
     (state) => state.getExperience.content
   );
-  console.log(userExperiencesAPIRS);
 
   //image upload to the experiences
 
@@ -89,10 +89,24 @@ const Experience = () => {
     >
       <Col className="d-flex flex-column mt-3 mb-3">
         <div className="d-flex align-items-center">
-          <div>
-            <p id="left-side-headers" className="mb-0">
+          <div className="d-flex align-items-center">
+            <p id="left-side-headers" className="mb-0 mr-2">
               Experience
             </p>
+            <a
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              href={
+                process.env.REACT_APP_URL +
+                "/users/" +
+                userProfileAPIRS._id +
+                "/experiences/csv/download"
+              }
+              style={{ textDecoration: "none" }}
+            >
+              Download CSV
+            </a>
           </div>
           <div className="ml-auto d-flex justify-content-end">
             <p className="mr-2 mb-0">
