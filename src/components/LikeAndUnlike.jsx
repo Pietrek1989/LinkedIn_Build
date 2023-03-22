@@ -29,8 +29,8 @@ const LikeAndUnlike = (props) => {
   // const commentsOfSelectedPost = useSelector((state) => state.comment.content);
   // console.log(commentsOfSelectedPost);
   const currentPost = useSelector((state) => state.getPostsWithId.content);
-  const isLike2 = currentPost.likes.some(
-    (like) => like._id === props.currentUser._id
+  const isLike2 = currentPost.likes?.some(
+    (like) => like === props.currentUser._id
   );
   console.log(currentPost);
   console.log(isLike2);
