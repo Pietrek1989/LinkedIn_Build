@@ -21,9 +21,14 @@ const ProfileAvatar = () => {
   const [changed, setChanged] = useState(false);
 
   useEffect(() => {
-    dispatch(getUserProfileApi());
-    setChanged(false);
-  }, [changed]);
+    if (!userProfileAPIRS) {
+      dispatch(getUserProfileApi());
+
+      setChanged(false);
+    } else {
+      setChanged(false);
+    }
+  }, []);
 
   const handleClosePen = () => setShow(false);
   const handleShowPen = () => setShow(true);
