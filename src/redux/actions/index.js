@@ -23,7 +23,8 @@ export const LIKE = "LIKE";
 export const UNLIKE = "UNLIKE";
 export const TOGGLE_SHOW = "TOGGLE_SHOW";
 export const GET_COMMENTS = "GET_COMMENTS";
-
+export const SEND="SEND"
+export const RECIEVE="RECIEVE"
 const options = {
   method: "GET",
   headers: {
@@ -693,3 +694,29 @@ export const getAllComments = (postId) => {
     }
   };
 };
+
+export const sendUnsend=(senderId,RecieverId)=>{
+  return async(dispatch,getState)=>{
+    try{
+      const res=await fetch(`${process.env.REACT_APP_URL}/users/${senderId}/friendRequest/${RecieverId}`,{
+        method: "PUT",
+        body: JSON.stringify(senderId,RecieverId),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      }
+
+      )
+
+      if(res.ok){
+        const data = await res.json()
+        dispatch({
+          type: SEND,
+          payload: data,
+        })
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+}

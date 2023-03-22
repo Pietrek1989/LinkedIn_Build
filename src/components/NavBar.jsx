@@ -20,7 +20,8 @@ import {
 } from "react-bootstrap";
 import { getUserProfileApi } from "../redux/actions";
 import { Link } from "react-router-dom";
-
+import { BsUpload } from "react-icons/bs"
+// import{IoPersonAdd} from "react-icons.Io"
 const NavBar = () => {
   const [searchValue, getSearchValue] = useState("");
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
@@ -85,10 +86,12 @@ const NavBar = () => {
     <div className="d-flex flex-column">
       <Navbar className="fixed-top" id="top-nav">
         <Container>
+        
           <Link
             to={"/"}
             onClick={window.removeEventListener("scroll", headerChange)}
           >
+            
             <Navbar.Brand>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +107,7 @@ const NavBar = () => {
               </svg>
             </Navbar.Brand>
           </Link>
-
+     
           <Form
             inline
             id="search-form-wrapper"
@@ -114,6 +117,7 @@ const NavBar = () => {
           >
             <i className="bi bi-search"></i>
             <FormControl
+
               type="text"
               placeholder="Search"
               className="mr-sm-2 show-search"
@@ -121,11 +125,16 @@ const NavBar = () => {
               value={searchValue}
               onChange={(e) => getSearchValue(e.target.value)}
             />
+                
             <div id="search-popup" className="position-absolute w-100">
               {searchArray &&
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
+                  <>
+                   <BsUpload onClick={()=>console.log("hello")}/>
+
                   <li
+                 
                     className="py-2"
                     key={oneResult._id}
                     onClick={() => {
@@ -133,6 +142,7 @@ const NavBar = () => {
                       document.querySelector("#search-popup").style.display =
                         "none";
                     }}
+                 
                   >
                     {" "}
                     <i className="bi bi-search"></i>
@@ -142,12 +152,16 @@ const NavBar = () => {
                       alt="profile"
                     ></img>
                     {oneResult.name} {oneResult.surname}
+                 
                   </li>
+                  </>
                   // </Link>
                 ))}
+                    
             </div>
           </Form>
           <Nav className="ml-auto ">
+        
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
