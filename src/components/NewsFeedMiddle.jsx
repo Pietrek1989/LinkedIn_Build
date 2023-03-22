@@ -217,11 +217,11 @@ const NewsFeedMiddle = () => {
             variant="primary"
             onClick={() => {
               dispatch(sendPostAsyncAction(post, file));
-              dispatch(getPostAction());
               handleClose();
               navigate("/feed");
               setPost({ text: "" });
               handleShowSuccessful();
+
               //   dispatch(getPostAction());
             }}
           >

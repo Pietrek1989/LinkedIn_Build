@@ -15,22 +15,27 @@ import {
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import "../styles/likeAndUnlike.css";
+import { useNavigate } from "react-router-dom";
 
 const LikeAndUnlike = (props) => {
   const dispatch = useDispatch();
+
   const isLike2 = props.singlePost.likes?.some(
     (like) => like._id === props.currentUser._id
   );
   useEffect(() => {
     dispatch(getPostWithIdAction(props.singlePost._id));
+    dispatch(getPostAction());
 
     // eslint-disable-next-line
   }, []);
+  const navigate = useNavigate();
 
   const [comment, setComment] = useState({
     user: "",
     comment: "",
     post: "",
+    createdAt: new Date(),
   });
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [likesSection, setLikesSection] = useState(false);
@@ -159,9 +164,10 @@ const LikeAndUnlike = (props) => {
                   className="add-comment-button"
                   onClick={() => {
                     dispatch(sendCommentAsyncAction(comment));
-                    dispatch(getAllComments(props.singlePost._id));
-                    setComment({ comment: "" });
-                    dispatch(getPostAction());
+
+                    setComment({ user: "", comment: "", post: "" });
+                    navigate("/feed");
+
                     //   dispatch(getPostAction());
                   }}
                 >

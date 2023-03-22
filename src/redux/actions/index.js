@@ -606,22 +606,27 @@ export const unlikeAction = (postId, userId) => {
   };
 };
 
-export function handleUploadAction(postID, file) {
-  const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
-  const formData = new FormData();
-  formData.append("image", file);
-  fetch(baseURL, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log("You've uploaded your profile pic!", result);
+export const handleUploadAction = (postID, file) => {
+  return (dispatch, getState) => {
+    const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
+    const formData = new FormData();
+    formData.append("image", file);
+    fetch(baseURL, {
+      method: "POST",
+      body: formData,
     })
-    .catch((error) => {
-      console.error("Problem uploading the image :(", error);
-    });
-}
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("You've uploaded your profile pic!", result);
+
+        dispatch(getPostAction());
+      })
+
+      .catch((error) => {
+        console.error("Problem uploading the image :(", error);
+      });
+  };
+};
 
 export const toggleShow = () => {
   return {
@@ -643,13 +648,16 @@ export const sendCommentAsyncAction = (editedData) => {
           },
         }
       );
-      // if (res.ok) {
-      //   const data = await res.json();
-      //   dispatch({
-      //     type: GET_COMMENTS,
-      //     payload: data,
-      //   });
-      // }
+      if (res.ok) {
+        dispatch(getPostAction());
+
+        //   const data = await res.json();
+        //   dispatch({
+        //     type: GET_COMMENTS,
+        //     payload: data,
+        //   });
+        // }
+      }
     } catch (error) {
       console.log(error);
     }
