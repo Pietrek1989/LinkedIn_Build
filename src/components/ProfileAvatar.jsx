@@ -330,8 +330,13 @@ const ProfileAvatar = () => {
           </Col>
           <Col>
             <Link to={`http://localhost:3001/api/pdf/${userProfileAPIRS._id}`}>
-              {" "}
-              GET CV
+              <Button
+                variant="outline-secondary"
+                className="d-flex justify-content-center align-items-center "
+                id="profile-buttons"
+              >
+                DOWNLOAD CV
+              </Button>
             </Link>
           </Col>
         </Col>
