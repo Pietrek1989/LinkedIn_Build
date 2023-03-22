@@ -18,8 +18,12 @@ import "../styles/likeAndUnlike.css";
 
 const LikeAndUnlike = (props) => {
   const dispatch = useDispatch();
+  const isLike2 = props.singlePost.likes?.some(
+    (like) => like._id === props.currentUser._id
+  );
   useEffect(() => {
     dispatch(getPostWithIdAction(props.singlePost._id));
+
     // eslint-disable-next-line
   }, []);
 
@@ -30,9 +34,7 @@ const LikeAndUnlike = (props) => {
   });
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [likesSection, setLikesSection] = useState(false);
-  const isLike2 = props.singlePost.likes?.some(
-    (like) => like._id === props.currentUser._id
-  );
+
   console.log(isLike2);
   const handleLikeToggle = () => {
     setLikesSection(!likesSection);
@@ -64,7 +66,7 @@ const LikeAndUnlike = (props) => {
                 dispatch(
                   unlikeAction(props.singlePost._id, props.currentUser._id)
                 );
-                dispatch(getPostWithIdAction(props.singlePost._id));
+                dispatch(getPostAction());
               }}
             >
               <AiTwotoneLike className="comment-box-btn-icon  mr-1" />
@@ -77,7 +79,7 @@ const LikeAndUnlike = (props) => {
                 dispatch(
                   likeAction(props.singlePost._id, props.currentUser._id)
                 );
-                dispatch(getPostWithIdAction(props.singlePost._id));
+                dispatch(getPostAction());
               }}
             >
               <AiOutlineLike className="comment-box-btn-icon  mr-1" />
