@@ -7,11 +7,12 @@ import { RiGalleryFill } from "react-icons/ri";
 import { ImBin } from "react-icons/im";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { putUserProfileApi } from "../redux/actions";
+import { getCvAction, putUserProfileApi } from "../redux/actions";
 import "../styles/profileDiv.css";
 import { getUserProfileApi } from "../redux/actions";
 import { FiSend } from "react-icons/fi";
 import { BsUpload } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const ProfileAvatar = () => {
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
@@ -326,6 +327,12 @@ const ProfileAvatar = () => {
             >
               More
             </Button>
+          </Col>
+          <Col>
+            <Link to={`http://localhost:3001/api/pdf/${userProfileAPIRS._id}`}>
+              {" "}
+              GET CV
+            </Link>
           </Col>
         </Col>
       </Col>
