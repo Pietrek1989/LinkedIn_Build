@@ -354,13 +354,13 @@
   border: 0px;
 }
 #search-form-wrapper .form-control {
-  width: 10vw !important;
+  width: 12vw !important;
   transition: width 0.5s !important;
 }
 
 #search-form-wrapper .form-control:focus {
   box-shadow: 0 0 0 0.1rem rgb(22 22 22 / 44%) !important;
-  width: 12.5vw !important;
+  width: 20vw !important;
 }
 
 .navbar-nav .nav-link {

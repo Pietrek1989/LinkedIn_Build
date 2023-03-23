@@ -221,8 +221,15 @@ const NavBar = () => {
                         onClick={() =>
                           sendAndGet(userProfileAPIRS._id, oneResult._id)
                         }
+                        className="m-auto"
                       >
-                        Send
+                        <Button
+                          variant="outline-primary"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          id="profile-buttons"
+                        >
+                          Send friend Requests
+                        </Button>
                       </h4>
                     ) : (
                       ""
