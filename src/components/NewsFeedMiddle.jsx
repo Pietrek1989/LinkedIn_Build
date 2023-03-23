@@ -52,12 +52,10 @@ const NewsFeedMiddle = () => {
 
   useEffect(() => {
     dispatch(getPostAction());
-    console.log("should fetch");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const allPosts = useSelector((state) => state.getPosts.content.allPosts);
-  console.log(allPosts);
 
   return (
     <>

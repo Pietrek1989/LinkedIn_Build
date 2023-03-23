@@ -33,7 +33,7 @@ export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
     try {
       let resp = await fetch(
-        `http://localhost:3001/api/users/64182d6e72234c42ca6886b9`
+        `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}`
       );
       if (resp.ok) {
         dispatch({
@@ -245,7 +245,7 @@ export const getExperienceAction = (query) => {
     try {
       const url = query
         ? `${process.env.REACT_APP_URL}/users/${query}/experiences`
-        : `${process.env.REACT_APP_URL}/users/64182d6e72234c42ca6886b9/experiences`;
+        : `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}/experiences`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();

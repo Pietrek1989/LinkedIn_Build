@@ -27,9 +27,12 @@ const ProfileAvatar = () => {
 
       setChanged(false);
     } else {
-      setChanged(false);
+      setChanged(true);
     }
   }, []);
+  window.onload = () => {
+    dispatch(getUserProfileApi());
+  };
 
   const handleClosePen = () => setShow(false);
   const handleShowPen = () => setShow(true);
@@ -382,7 +385,7 @@ const ProfileAvatar = () => {
                   viewBox="0 0 24 24"
                   data-supported-dps="24x24"
                   fill="currentColor"
-                  class="mercado-match"
+                  className="mercado-match"
                   width="24"
                   height="24"
                   focusable="false"

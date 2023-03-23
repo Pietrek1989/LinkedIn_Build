@@ -40,7 +40,6 @@ const LikeAndUnlike = (props) => {
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [likesSection, setLikesSection] = useState(false);
 
-  console.log(isLike2);
   const handleLikeToggle = () => {
     setLikesSection(!likesSection);
   };

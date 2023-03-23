@@ -35,8 +35,6 @@ const Experience = () => {
   const handleShowSuccessful = () => setSuccessful(true);
 
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
-  console.log("user: ", userProfileAPIRS);
-  console.log(userProfileAPIRS);
   useEffect(() => {
     dispatch(getExperienceAction(userProfileAPIRS._id));
     setChanged(false);
