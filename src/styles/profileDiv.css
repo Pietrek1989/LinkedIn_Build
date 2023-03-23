@@ -61,3 +61,20 @@
 #profile-pic-update-buttons:hover {
   background-color: rgb(78, 76, 76);
 }
+
+#popup {
+  background-color: #f2f2f2;
+  padding: 1em;
+  border-radius: 10px;
+  position: absolute;
+  top: 30px;
+  left: -50px;
+  min-width: 200px;
+  z-index: 1;
+  font-size: 0.9em;
+}
+
+.link-to-pdf {
+  text-decoration: none;
+  color: #4f4f4f;
+}

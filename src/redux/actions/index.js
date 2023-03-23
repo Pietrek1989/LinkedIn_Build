@@ -30,17 +30,15 @@ export const DECLINE="DECLINE"
 export const GET_ALL_FRIENDS="GET_ALL_FRIENDS"
 const options = {
   method: "GET",
-  headers: {
-    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-  },
 };
 
 //PROFILE
 export const getUserProfileApi = () => {
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}`;
     try {
-      let resp = await fetch(baseEndpoint, options);
+      let resp = await fetch(
+        `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}`
+      );
       if (resp.ok) {
         dispatch({
           type: GET_USER_LOADING,
@@ -102,7 +100,6 @@ export const putUserProfileApi = () => {
     method: "PUT",
     headers: new Headers({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
     }),
     body: JSON.stringify(editedData),
   };
@@ -196,11 +193,7 @@ export const getUserbyId = (query) => {
 export const getAllProfileActionAsync = () => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_URL}/users`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-        },
-      });
+      const response = await fetch(`${process.env.REACT_APP_URL}/users`, {});
       if (response.ok) {
         const data = await response.json();
         dispatch({
@@ -254,9 +247,10 @@ export const getSpecificProfileAction = (query) => {
 export const getExperienceAction = (query) => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_URL}/users/${query}/experiences`
-      );
+      const url = query
+        ? `${process.env.REACT_APP_URL}/users/${query}/experiences`
+        : `${process.env.REACT_APP_URL}/users/${process.env.REACT_APP_USER}/experiences`;
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         dispatch({
@@ -337,9 +331,6 @@ function handleUploadActionExp(expId, userProfileAPIRS, file) {
   fetch(baseURL, {
     method: "POST",
     body: formData,
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-    },
   })
     .then((response) => response.json())
     .then((result) => {
@@ -357,9 +348,7 @@ export const deleteSpecificExperienceAction = (query, expId) => {
         `${process.env.REACT_APP_URL}/users/${query}/experiences/${expId}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
+          headers: {},
         }
       );
       if (response.ok) {
@@ -407,7 +396,6 @@ export const putUserExperience = (query, expId) => {
           body: JSON.stringify(editedData),
           headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
           }),
         }
       );
@@ -503,7 +491,6 @@ export const putPostAction = (postId) => {
         body: JSON.stringify(editedData),
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         }),
       });
       if (res.ok) {
@@ -526,9 +513,6 @@ export const deletePostAction = (query) => {
         `${process.env.REACT_APP_URL}/posts/${query}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-          },
         }
       );
       if (response.ok) {
@@ -553,7 +537,6 @@ export const postExpImageAction = (userId, expId) => {
           body: JSON.stringify(expImage),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
           },
         }
       );
@@ -575,7 +558,6 @@ export const addPostImageAction = (postId) => {
         body: JSON.stringify(postImage),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         },
       });
       if (res.ok) {
@@ -628,22 +610,27 @@ export const unlikeAction = (postId, userId) => {
   };
 };
 
-export function handleUploadAction(postID, file) {
-  const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
-  const formData = new FormData();
-  formData.append("image", file);
-  fetch(baseURL, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log("You've uploaded your profile pic!", result);
+export const handleUploadAction = (postID, file) => {
+  return (dispatch, getState) => {
+    const baseURL = `${process.env.REACT_APP_URL}/posts/${postID}/image`;
+    const formData = new FormData();
+    formData.append("image", file);
+    fetch(baseURL, {
+      method: "POST",
+      body: formData,
     })
-    .catch((error) => {
-      console.error("Problem uploading the image :(", error);
-    });
-}
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("You've uploaded your profile pic!", result);
+
+        dispatch(getPostAction());
+      })
+
+      .catch((error) => {
+        console.error("Problem uploading the image :(", error);
+      });
+  };
+};
 
 export const toggleShow = () => {
   return {
@@ -665,13 +652,16 @@ export const sendCommentAsyncAction = (editedData) => {
           },
         }
       );
-      // if (res.ok) {
-      //   const data = await res.json();
-      //   dispatch({
-      //     type: GET_COMMENTS,
-      //     payload: data,
-      //   });
-      // }
+      if (res.ok) {
+        dispatch(getPostAction());
+
+        //   const data = await res.json();
+        //   dispatch({
+        //     type: GET_COMMENTS,
+        //     payload: data,
+        //   });
+        // }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -809,3 +799,30 @@ export const getAllFriends=(userId)=>{
     }
   }
 }
+export const deleteCommentAsyncAction = (singleComment) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_URL}/posts/${singleComment.post}/comments/${singleComment._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
+        dispatch(getPostAction());
+
+        //   const data = await res.json();
+        //   dispatch({
+        //     type: GET_COMMENTS,
+        //     payload: data,
+        //   });
+        // }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

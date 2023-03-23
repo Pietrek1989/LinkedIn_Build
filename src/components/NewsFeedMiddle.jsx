@@ -26,6 +26,9 @@ const NewsFeedMiddle = () => {
   const [deleted, setDeleted] = useState(false);
   const handleCloseDeleted = () => setDeleted(false);
   const handleShowDeleted = () => setDeleted(true);
+  const [notDeleted, setNotDeleted] = useState(false);
+  const handleCloseNotDeleted = () => setNotDeleted(false);
+  const handleShowNotDeleted = () => setNotDeleted(true);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -52,12 +55,10 @@ const NewsFeedMiddle = () => {
 
   useEffect(() => {
     dispatch(getPostAction());
-    console.log("should fetch");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const allPosts = useSelector((state) => state.getPosts.content.allPosts);
-  console.log(allPosts);
 
   return (
     <>
@@ -217,11 +218,11 @@ const NewsFeedMiddle = () => {
             variant="primary"
             onClick={() => {
               dispatch(sendPostAsyncAction(post, file));
-              dispatch(getPostAction());
               handleClose();
               navigate("/feed");
               setPost({ text: "" });
               handleShowSuccessful();
+
               //   dispatch(getPostAction());
             }}
           >
@@ -302,8 +303,12 @@ const NewsFeedMiddle = () => {
                         <Button
                           className="button-delete-post pl-3 mb-3"
                           onClick={() => {
-                            dispatch(deletePostAction(singlePost._id));
-                            handleShowDeleted();
+                            if (singlePost.user._id === userProfileAPIRS._id) {
+                              dispatch(deletePostAction(singlePost._id));
+                              handleShowDeleted();
+                            } else {
+                              handleShowNotDeleted();
+                            }
                           }}
                         >
                           <i className="bi bi-trash3-fill"></i>
@@ -332,6 +337,11 @@ const NewsFeedMiddle = () => {
       <Modal show={deleted} onHide={handleCloseDeleted}>
         <Alert variant="warning" className="text-center">
           Deleted
+        </Alert>
+      </Modal>
+      <Modal show={notDeleted} onHide={handleCloseNotDeleted}>
+        <Alert variant="warning" className="text-center">
+          You can only delete your posts!
         </Alert>
       </Modal>
     </>
