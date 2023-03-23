@@ -97,31 +97,17 @@ const NavBar = () => {
       console.log(err);
     }
 
-const declineAndGet=async(id,sid)=>{
-  try{
-  await dispatch(decline(id,sid))
-  dispatch(getAllFriends(userProfileAPIRS._id))
-  dispatch(getAllRequests(userProfileAPIRS._id))
-  }catch(err){
-  console.log(err)
-  }
-  
-  
-  
-  console.log(friends)
-  
-  }
+    console.log(friends);
+  };
 
-  const sendAndGet=async(id,sid)=>{
-    try{
-      await dispatch(sendUnsend(id,sid))
-      dispatch(getAllFriends(userProfileAPIRS._id))
-
-    }catch(err){
-      console.log(err)
+  const sendAndGet = async (id, sid) => {
+    try {
+      await dispatch(sendUnsend(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
     }
-  }
-
+  };
 
   let allProfiles = useSelector((state) => state.profile.content);
   let searchArray = useSelector((state) => state.search.content[0]);
@@ -208,32 +194,39 @@ const declineAndGet=async(id,sid)=>{
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
                   <>
-               
-
-
-                  <li
-                 
-                    className="py-2"
-                    key={oneResult._id}
-                    onClick={() => {
-                      dispatch(getUserbyId(oneResult._id));
-                      document.querySelector("#search-popup").style.display =
-                        "none";
-                    }}
-                 
-                  >
-  
-                    {" "}
-                    <i className="bi bi-search"></i>
-                    <img
-                      src={oneResult.image}
-                      className="profile-photo-search mx-1 "
-                      alt="profile"
-                    ></img>
-                    {oneResult.name} {oneResult.surname}
-                 
-                  </li>
-                  {userProfileAPIRS._id.includes(oneResult._id)?"":!oneResult.friendRequests.includes(userProfileAPIRS._id) && !userProfileAPIRS.friends.includes(oneResult._id) ?<h4 onClick={()=>sendAndGet(userProfileAPIRS._id,oneResult._id)}>Send</h4>:""}
+                    <li
+                      className="py-2"
+                      key={oneResult._id}
+                      onClick={() => {
+                        dispatch(getUserbyId(oneResult._id));
+                        document.querySelector("#search-popup").style.display =
+                          "none";
+                      }}
+                    >
+                      {" "}
+                      <i className="bi bi-search"></i>
+                      <img
+                        src={oneResult.image}
+                        className="profile-photo-search mx-1 "
+                        alt="profile"
+                      ></img>
+                      {oneResult.name} {oneResult.surname}
+                    </li>
+                    {userProfileAPIRS._id.includes(oneResult._id) ? (
+                      ""
+                    ) : !oneResult.friendRequests.includes(
+                        userProfileAPIRS._id
+                      ) && !userProfileAPIRS.friends.includes(oneResult._id) ? (
+                      <h4
+                        onClick={() =>
+                          sendAndGet(userProfileAPIRS._id, oneResult._id)
+                        }
+                      >
+                        Send
+                      </h4>
+                    ) : (
+                      ""
+                    )}
                   </>
                   // </Link>
                 ))}

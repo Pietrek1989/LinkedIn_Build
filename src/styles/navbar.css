@@ -835,6 +835,7 @@
   color: #4c4c4c;
 }
 
-#dropdown-menu-nav {
-  top: 53px;
+.navbar-expand .navbar-nav .dropdown-menu {
+  top: 50px !important;
+  padding-bottom: 20px;
 }
