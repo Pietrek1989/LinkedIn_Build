@@ -224,13 +224,6 @@ const declineAndGet=async(id,sid)=>{
                     {oneResult.name} {oneResult.surname}
                  
                   </li>
-                  {/* {(!userProfileAPIRS.friends.includes(oneResult._id)?!userProfileAPIRS.friendRequests.includes(oneResult._id) &&  !oneResult.friendRequests.includes(userProfileAPIRS._id) ?  
-               
-               <h4 onClick={()=>sendAndGet(userProfileAPIRS._id,oneResult._id)}>Send</h4>
-             :  <h4></h4>:
-                    
-                     <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,oneResult._id))} variant="danger">Unfriend</button>
-                  )} */}
                   {userProfileAPIRS._id.includes(oneResult._id)?"":!oneResult.friendRequests.includes(userProfileAPIRS._id) && !userProfileAPIRS.friends.includes(oneResult._id) ?<h4 onClick={()=>sendAndGet(userProfileAPIRS._id,oneResult._id)}>Send</h4>:""}
                   </>
                   // </Link>
