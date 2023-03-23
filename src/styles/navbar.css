@@ -836,6 +836,6 @@
 }
 
 .navbar-expand .navbar-nav .dropdown-menu {
-  top: 50px !important;
+  top: 45px;
   padding-bottom: 20px;
 }
