@@ -94,11 +94,20 @@ const declineAndGet=async(id,sid)=>{
   }
   
   
+  
   console.log(friends)
   
   }
 
+  const sendAndGet=async(id,sid)=>{
+    try{
+      await dispatch(sendUnsend(id,sid))
+      dispatch(getAllFriends(userProfileAPIRS._id))
 
+    }catch(err){
+      console.log(err)
+    }
+  }
 
 
   let allProfiles = useSelector((state) => state.profile.content);
@@ -215,13 +224,14 @@ const declineAndGet=async(id,sid)=>{
                     {oneResult.name} {oneResult.surname}
                  
                   </li>
-                  {(!userProfileAPIRS.friends.includes(oneResult._id)?!userProfileAPIRS.sentRequests.includes(oneResult._id) ?  
+                  {/* {(!userProfileAPIRS.friends.includes(oneResult._id)?!userProfileAPIRS.friendRequests.includes(oneResult._id) &&  !oneResult.friendRequests.includes(userProfileAPIRS._id) ?  
                
-               <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Send</h4>
-             :  <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Unsend</h4>:
+               <h4 onClick={()=>sendAndGet(userProfileAPIRS._id,oneResult._id)}>Send</h4>
+             :  <h4></h4>:
                     
                      <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,oneResult._id))} variant="danger">Unfriend</button>
-                  )}
+                  )} */}
+                  {userProfileAPIRS._id.includes(oneResult._id)?"":!oneResult.friendRequests.includes(userProfileAPIRS._id) && !userProfileAPIRS.friends.includes(oneResult._id) ?<h4 onClick={()=>sendAndGet(userProfileAPIRS._id,oneResult._id)}>Send</h4>:""}
                   </>
                   // </Link>
                 ))}
