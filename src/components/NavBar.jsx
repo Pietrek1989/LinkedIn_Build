@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllRequests, getUserbyId, sendUnsend, toggleShow } from "../redux/actions";
+import { getAllRequests, getUserbyId, toggleShow,sendUnsend,friendUnfriend,decline,getAllFriends } from "../redux/actions";
 import {
   getAllProfileActionAsync,
   getSearchResultActionAsync,
@@ -17,6 +17,7 @@ import {
   Button,
   Row,
   Col,
+  Dropdown
 } from "react-bootstrap";
 import { getUserProfileApi } from "../redux/actions";
 import { Link } from "react-router-dom";
@@ -27,7 +28,8 @@ const NavBar = () => {
   const [searchValue, getSearchValue] = useState("");
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
   const reqs = useSelector((state) => state.Requests.allReqs)
-
+  const friends=useSelector((state) => state.AllFriends.allFr)
+  console.log(useSelector((state) => state.AllFriends))
   const dispatch = useDispatch();
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -59,10 +61,12 @@ const NavBar = () => {
 //   }
 
 useEffect(()=>{
- dispatch(getAllRequests(userProfileAPIRS._id))
-console.log(reqs)
-
+  dispatch(getAllRequests(userProfileAPIRS._id))
 },[])
+useEffect(()=>{
+  dispatch(getAllFriends(userProfileAPIRS._id))
+  console.log(userProfileAPIRS._id)
+},[userProfileAPIRS._id])
   let allProfiles = useSelector((state) => state.profile.content);
   let searchArray = useSelector((state) => state.search.content[0]);
 
@@ -97,7 +101,17 @@ console.log(reqs)
     <div className="d-flex flex-column">
       <Navbar className="fixed-top" id="top-nav">
         <Container>
-        
+     
+        {/* <div className="div">
+            {reqs && reqs.map((req)=>{
+  console.log(req)
+  return <><p>{req.name}</p>
+  <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,req._id))}>accept</button>
+  <button onClick={dispatch(()=>decline(userProfileAPIRS._id,req._id))}>Decline</button>
+ </>
+})}
+
+</div> */}
           <Link
             to={"/"}
             onClick={window.removeEventListener("scroll", headerChange)}
@@ -142,9 +156,7 @@ console.log(reqs)
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
                   <>
-                  {!userProfileAPIRS.sentRequests.includes(oneResult._id) ?   
-                  <BsUpload onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))} on/>
-                :  <i className="bi bi-search" onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}/>}
+               
 
 
                   <li
@@ -158,14 +170,7 @@ console.log(reqs)
                     }}
                  
                   >
-                                <div className="div">
-            {reqs && reqs.map((req)=>{
-  console.log(req)
-  return <><p>{req.name}</p>
-
- </>
-})}
-</div>
+  
                     {" "}
                     <i className="bi bi-search"></i>
                     <img
@@ -176,16 +181,87 @@ console.log(reqs)
                     {oneResult.name} {oneResult.surname}
                  
                   </li>
-
+                  {(!userProfileAPIRS.friends.includes(oneResult._id)?!userProfileAPIRS.sentRequests.includes(oneResult._id) ?  
+               
+               <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Send</h4>
+             :  <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Unsend</h4>:
+                    
+                     <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,oneResult._id))} variant="danger">Unfriend</button>
+                  )}
+                  {!userProfileAPIRS.sentRequests.includes(oneResult._id) ?  
+               
+               <h2 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Add</h2>
+             :  <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Remove</h4>}
                   </>
                   // </Link>
                 ))}
                     
             </div>
-
+       
           </Form>
-          <Nav className="ml-auto ">
 
+
+
+
+
+
+
+
+
+     
+
+   
+          <Nav className="ml-auto ">
+          <Dropdown className="dropdowns"  >
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Friends
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+       {friends && friends.map((req)=>{
+          
+            return<>
+            <Dropdown.Item  >     {friends&& friends.map((fr)=>{
+
+         
+  return <><small>{fr.name} {fr.surname}</small>
+  <img style={{height:"30px", borderRadius:"50%"}} src={fr.image} alt="" />
+  <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,fr._id))} variant="danger">Unfriend</button>
+  </>
+})}
+            </Dropdown.Item>
+                       
+                      </>
+           
+          })}
+           {/* <Dropdown.Item>action</Dropdown.Item> */}
+        
+    
+      </Dropdown.Menu>
+    </Dropdown>
+           <Dropdown className="dropdowns">
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Requests
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+       {reqs && reqs.map((req)=>{
+        if(userProfileAPIRS.friendRequests.includes(req._id)){
+            
+            return<>
+            <Dropdown.Item  ><p>{req.name}</p>
+            <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,req._id))} variant="primary">accept</button>
+            <button onClick={dispatch(()=>decline(userProfileAPIRS._id,req._id))} variant="danger">Decline</button>
+            </Dropdown.Item>
+       
+                      </>
+           
+ } })}
+           
+        
+    
+      </Dropdown.Menu>
+    </Dropdown>
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

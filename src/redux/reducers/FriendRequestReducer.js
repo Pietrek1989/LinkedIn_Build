@@ -1,15 +1,15 @@
-import { SEND, RECIEVE, UNSEND,UNRECIEVE} from "../actions";
+import { SEND, RECIEVE, UNSEND,UNRECIEVE, DECLINE} from "../actions";
 
 const initialState = {
  
   Recieved:[]
 };
 
-const likeReducer = (state = initialState, action) => {
+const FriendRequestReducer = (state = initialState, action) => {
   switch (action.type) {
     
         case RECIEVE:
-            if(!state.Recieved.includes(payload._id)){
+            if(!state.Recieved.includes(action.payload._id)){
       return {
         ...state,
         Recieved: [...state.Recieved, action.payload],
@@ -20,6 +20,11 @@ const likeReducer = (state = initialState, action) => {
             Recieved: [...state.Recieved.filter((req)=>req !== action.payload)],
           }
     }
+    case DECLINE :
+     return{
+      ...state,
+      Recieved: [...state.Recieved.filter((req)=>req !== action.payload)]
+     }
    
 
     default:
@@ -27,4 +32,4 @@ const likeReducer = (state = initialState, action) => {
   }
 };
 
-export default likeReducer;
+export default FriendRequestReducer;

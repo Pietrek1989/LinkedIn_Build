@@ -23,6 +23,9 @@ import likeReducer from "../reducers/likeReducer";
 import chatReducer from "../reducers/chatReducer";
 import commentReducer from "../reducers/commentReducer";
 import allRequests from "../reducers/allRequestsReducer"
+import FriendReducer from "../reducers/FriendReducer";
+import FriendRequestReducer from "../reducers/FriendRequestReducer";
+import allFriends from "../reducers/GetFriendsReducer";
 const persistConfig = {
   storage: localStorage,
   key: "root", // this brings the whole redux store into persistency
@@ -53,7 +56,10 @@ const combinedReducer = combineReducers({
   like: likeReducer,
   chatReducer: chatReducer,
   comment: commentReducer,
-  Requests:allRequests
+  Requests:allRequests,
+  FriendRequests:FriendRequestReducer,
+  Friends:FriendReducer,
+  AllFriends:allFriends
 });
 
 const persistedReducer = persistReducer(persistConfig, combinedReducer);

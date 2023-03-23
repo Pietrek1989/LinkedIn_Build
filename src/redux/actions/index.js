@@ -26,6 +26,8 @@ export const GET_COMMENTS = "GET_COMMENTS";
 export const RECIEVE="RECIEVE"
 export const FRIEND="FRIEND"
 export const GET_ALL_REQS="GET_ALL_REQS"
+export const DECLINE="DECLINE"
+export const GET_ALL_FRIENDS="GET_ALL_FRIENDS"
 const options = {
   method: "GET",
   headers: {
@@ -704,6 +706,7 @@ export const sendUnsend=(senderId,RecieverId)=>{
       }
 
       )
+      
       console.log(res)
       if(res.ok){
         const data = await res.json()
@@ -722,18 +725,18 @@ export const sendUnsend=(senderId,RecieverId)=>{
 export const friendUnfriend=(senderId,RecieverId)=>{
   return async(dispatch,getState)=>{
    try{
-    const res= await fetch(`${process.env.REACT_APP_URL}/users/${senderId}/friendUnfriend/${RecieverId}`,{
+    const url=`${process.env.REACT_APP_URL}/users/${senderId}/friendUnfriend/${RecieverId}`
+    const res= await fetch(url,{
       method: "PUT",
     })
-    console.log(res)
     if(res.ok){
       const data = await res.json()
-  
+      
       dispatch({
         type: FRIEND,
         payload: data,
       })
-      
+      console.log("friendUnfrie3nd")
   }
    }catch(err){
     console.log(err)
@@ -750,12 +753,12 @@ export const getAllRequests=(userId)=>{
      console.log("hello")
       if(res.ok){
         const data = await res.json()
-    
+       const reqs=data.friendRequests
         dispatch({
           type: GET_ALL_REQS,
-          payload: data,
+          payload: reqs,
         })
-        console.log("data",data.friendRequests)
+        console.log("data",reqs)
     }
     }catch(err){
       console.log(err)
@@ -763,3 +766,46 @@ export const getAllRequests=(userId)=>{
   }
 }
 
+
+export const decline=(senderId,RecieverId)=>{
+  return async(dispatch,getState)=>{
+    try{
+      const res=await fetch(`${process.env.REACT_APP_URL}/users/${senderId}/decline/${RecieverId}`,{
+        method: "PUT",
+      }
+
+      )
+      console.log(res)
+      if(res.ok){
+        const data = await res.json()
+    
+        dispatch({
+          type: DECLINE,
+          payload: data,
+        })
+        
+    }
+    }catch(err){
+      console.log(err)
+    }
+  }
+}
+
+export const getAllFriends=(userId)=>{
+  return async(dispatch,getState)=>{
+    try{
+      const res= await fetch(`${process.env.REACT_APP_URL}/users/${userId}/friends`)
+      if(res.ok){
+        const data = await res.json()
+       const friends=data.friends
+        dispatch({
+          type: GET_ALL_FRIENDS,
+          payload: friends,
+        })
+        console.log("friends",friends)
+    }
+    }catch(err){
+      console.log(err)
+    }
+  }
+}

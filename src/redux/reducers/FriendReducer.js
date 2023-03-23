@@ -7,7 +7,7 @@ const initialState = {
 const FriendReducer = (state = initialState, action) => {
   switch (action.type) {
     case FRIEND:
-        if(!state.Friend.includes(payload._id)){
+        if(!state.Friend.includes(action.payload._id)){
       return {
         ...state,
         Friend: [...state.Friend, action.payload],
