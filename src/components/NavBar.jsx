@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserbyId, sendUnsend, toggleShow } from "../redux/actions";
+import { getAllRequests, getUserbyId, sendUnsend, toggleShow } from "../redux/actions";
 import {
   getAllProfileActionAsync,
   getSearchResultActionAsync,
@@ -21,10 +21,13 @@ import {
 import { getUserProfileApi } from "../redux/actions";
 import { Link } from "react-router-dom";
 import { BsUpload } from "react-icons/bs"
+
 // import{IoPersonAdd} from "react-icons.Io"
 const NavBar = () => {
   const [searchValue, getSearchValue] = useState("");
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
+  const reqs = useSelector((state) => state.Requests.allReqs)
+
   const dispatch = useDispatch();
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -42,6 +45,24 @@ const NavBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+// const friendUnfriend=async(senderId,recieverId)=>{
+//   try{
+//     const res=await fetch(`http://localhost:3001/api/users/${senderId}/friendRequest/${recieverId}`,{
+//       method: "PUT",
+//     })
+//     if(res.ok){
+//     console.log(res)
+//     }
+//   }catch(err){
+//     console.log(err)
+//   }
+//   }
+
+useEffect(()=>{
+ dispatch(getAllRequests(userProfileAPIRS._id))
+console.log(reqs)
+
+},[])
   let allProfiles = useSelector((state) => state.profile.content);
   let searchArray = useSelector((state) => state.search.content[0]);
 
@@ -71,20 +92,6 @@ const NavBar = () => {
     dispatch(toggleShow());
   };
 
-  const sendRequest=()=>{
-    dispatch(sendUnsend())
-  }
-  // search function
-  //   const specificProfile = useSelector((state) => state.profileSearch.content);
-  //   const [query, setQuery] = useState("");
-  // const handleChange = (e) => {
-  //   setQuery(e.target.value);
-  // };
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     dispatch(getSpecificProfileAction(query));
-  //     dispatch(getExperienceAction(query));
-  //   };
 
   return (
     <div className="d-flex flex-column">
@@ -135,7 +142,10 @@ const NavBar = () => {
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
                   <>
-                   <BsUpload onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}/>
+                  {!userProfileAPIRS.sentRequests.includes(oneResult._id) ?   
+                  <BsUpload onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))} on/>
+                :  <i className="bi bi-search" onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}/>}
+
 
                   <li
                  
@@ -148,6 +158,14 @@ const NavBar = () => {
                     }}
                  
                   >
+                                <div className="div">
+            {reqs && reqs.map((req)=>{
+  console.log(req)
+  return <><p>{req.name}</p>
+
+ </>
+})}
+</div>
                     {" "}
                     <i className="bi bi-search"></i>
                     <img
@@ -158,14 +176,16 @@ const NavBar = () => {
                     {oneResult.name} {oneResult.surname}
                  
                   </li>
+
                   </>
                   // </Link>
                 ))}
                     
             </div>
+
           </Form>
           <Nav className="ml-auto ">
-        
+
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +201,7 @@ const NavBar = () => {
               </svg>
               <p className="text-gone">Home</p>
             </Link>
+
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
