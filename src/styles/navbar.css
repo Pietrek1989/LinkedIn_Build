@@ -354,13 +354,13 @@
   border: 0px;
 }
 #search-form-wrapper .form-control {
-  width: 12vw !important;
+  width: 10vw !important;
   transition: width 0.5s !important;
 }
 
 #search-form-wrapper .form-control:focus {
   box-shadow: 0 0 0 0.1rem rgb(22 22 22 / 44%) !important;
-  width: 20vw !important;
+  width: 12.5vw !important;
 }
 
 .navbar-nav .nav-link {
@@ -389,7 +389,7 @@
   background-color: red;
   text-align: center;
   top: 1.3rem;
-  right: 1.9rem;
+  right: 2rem;
   font-size: 0.8rem;
   font-weight: bold;
   color: white;
@@ -398,7 +398,7 @@
   border-radius: 50%;
   width: 1.8em;
   height: 1.8em;
-  margin-top: 2em;
+  margin-top: 3em;
 }
 .profile-photo-dropdown {
   width: 3.3em;
@@ -609,7 +609,7 @@
 
 .modal-icon-wrapper {
   color: grey;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
 }
 .modal-icon-wrapper:hover {
   color: black;
@@ -813,10 +813,28 @@
   scale: 1.5;
   margin-right: 10px;
 }
-.dropdowns{
+.dropdowns {
   margin-top: 2em;
   margin-right: 1em;
   color: transparent;
+}
 
+#dropdown-notifications {
+  background-color: white;
+  color: rgba(0, 0, 0, 0.55);
+  box-shadow: none;
+  max-height: 35px;
+  padding: 0;
+  margin: 0;
+  text-transform: lowercase;
+  overflow: hidden;
+  padding-bottom: 50px;
+  margin-bottom: 33px;
+}
+#dropdown-notifications:hover {
+  color: #4c4c4c;
+}
 
+#dropdown-menu-nav {
+  top: 53px;
 }

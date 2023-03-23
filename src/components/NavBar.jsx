@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllRequests, getUserbyId, toggleShow,sendUnsend,friendUnfriend,decline,getAllFriends } from "../redux/actions";
+import {
+  getAllRequests,
+  getUserbyId,
+  toggleShow,
+  sendUnsend,
+  friendUnfriend,
+  decline,
+  getAllFriends,
+} from "../redux/actions";
 import {
   getAllProfileActionAsync,
   getSearchResultActionAsync,
@@ -17,19 +25,18 @@ import {
   Button,
   Row,
   Col,
-  Dropdown
+  Dropdown,
 } from "react-bootstrap";
 import { getUserProfileApi } from "../redux/actions";
 import { Link } from "react-router-dom";
-import { BsUpload } from "react-icons/bs"
+import { BsUpload } from "react-icons/bs";
 
 // import{IoPersonAdd} from "react-icons.Io"
 const NavBar = () => {
   const [searchValue, getSearchValue] = useState("");
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
-  const reqs = useSelector((state) => state.Requests.allReqs)
-  const friends=useSelector((state) => state.AllFriends.allFr)
-
+  const reqs = useSelector((state) => state.Requests.allReqs);
+  const friends = useSelector((state) => state.AllFriends.allFr);
 
   const dispatch = useDispatch();
   const handleKeyDown = (event) => {
@@ -48,58 +55,50 @@ const NavBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-// const friendUnfriend=async(senderId,recieverId)=>{
-//   try{
-//     const res=await fetch(`http://localhost:3001/api/users/${senderId}/friendRequest/${recieverId}`,{
-//       method: "PUT",
-//     })
-//     if(res.ok){
-//     console.log(res)
-//     }
-//   }catch(err){
-//     console.log(err)
-//   }
-//   }
+  // const friendUnfriend=async(senderId,recieverId)=>{
+  //   try{
+  //     const res=await fetch(`http://localhost:3001/api/users/${senderId}/friendRequest/${recieverId}`,{
+  //       method: "PUT",
+  //     })
+  //     if(res.ok){
+  //     console.log(res)
+  //     }
+  //   }catch(err){
+  //     console.log(err)
+  //   }
+  //   }
 
-useEffect(()=>{
-  dispatch(getAllRequests(userProfileAPIRS._id))
-},[userProfileAPIRS._id])
-useEffect(()=>{
-  dispatch(getAllFriends(userProfileAPIRS._id))
-  console.log(userProfileAPIRS._id)
-},[])
+  useEffect(() => {
+    dispatch(getAllRequests(userProfileAPIRS._id));
+  }, [userProfileAPIRS._id]);
+  useEffect(() => {
+    dispatch(getAllFriends(userProfileAPIRS._id));
+    console.log(userProfileAPIRS._id);
+  }, []);
 
+  const friendAndGet = async (id, sid) => {
+    try {
+      await dispatch(friendUnfriend(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+      dispatch(getAllRequests(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
 
-const friendAndGet=async(id,sid)=>{
-try{
-await dispatch(friendUnfriend(id,sid))
-dispatch(getAllFriends(userProfileAPIRS._id))
-dispatch(getAllRequests(userProfileAPIRS._id))
-}catch(err){
-console.log(err)
-}
+    console.log(friends);
+  };
 
+  const declineAndGet = async (id, sid) => {
+    try {
+      await dispatch(decline(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+      dispatch(getAllRequests(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
 
-console.log(friends)
-
-}
-
-const declineAndGet=async(id,sid)=>{
-  try{
-  await dispatch(decline(id,sid))
-  dispatch(getAllFriends(userProfileAPIRS._id))
-  dispatch(getAllRequests(userProfileAPIRS._id))
-  }catch(err){
-  console.log(err)
-  }
-  
-  
-  console.log(friends)
-  
-  }
-
-
-
+    console.log(friends);
+  };
 
   let allProfiles = useSelector((state) => state.profile.content);
   let searchArray = useSelector((state) => state.search.content[0]);
@@ -130,13 +129,11 @@ const declineAndGet=async(id,sid)=>{
     dispatch(toggleShow());
   };
 
-
   return (
     <div className="d-flex flex-column">
       <Navbar className="fixed-top" id="top-nav">
         <Container>
-     
-        {/* <div className="div">
+          {/* <div className="div">
             {reqs && reqs.map((req)=>{
   console.log(req)
   return <><p>{req.name}</p>
@@ -150,7 +147,6 @@ const declineAndGet=async(id,sid)=>{
             to={"/"}
             onClick={window.removeEventListener("scroll", headerChange)}
           >
-            
             <Navbar.Brand>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +162,7 @@ const declineAndGet=async(id,sid)=>{
               </svg>
             </Navbar.Brand>
           </Link>
-     
+
           <Form
             inline
             id="search-form-wrapper"
@@ -176,7 +172,6 @@ const declineAndGet=async(id,sid)=>{
           >
             <i className="bi bi-search"></i>
             <FormControl
-
               type="text"
               placeholder="Search"
               className="mr-sm-2 show-search"
@@ -184,116 +179,103 @@ const declineAndGet=async(id,sid)=>{
               value={searchValue}
               onChange={(e) => getSearchValue(e.target.value)}
             />
-                
+
             <div id="search-popup" className="position-absolute w-100">
               {searchArray &&
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
                   <>
-               
-
-
-                  <li
-                 
-                    className="py-2"
-                    key={oneResult._id}
-                    onClick={() => {
-                      dispatch(getUserbyId(oneResult._id));
-                      document.querySelector("#search-popup").style.display =
-                        "none";
-                    }}
-                 
-                  >
-  
-                    {" "}
-                    <i className="bi bi-search"></i>
-                    <img
-                      src={oneResult.image}
-                      className="profile-photo-search mx-1 "
-                      alt="profile"
-                    ></img>
-                    {oneResult.name} {oneResult.surname}
-                 
-                  </li>
-                  {(!userProfileAPIRS.friends.includes(oneResult._id)?!userProfileAPIRS.sentRequests.includes(oneResult._id) ?  
-               
-               <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Send</h4>
-             :  <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Unsend</h4>:
-                    
-                     <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,oneResult._id))} variant="danger">Unfriend</button>
-                  )}
+                    <li
+                      className="py-2"
+                      key={oneResult._id}
+                      onClick={() => {
+                        dispatch(getUserbyId(oneResult._id));
+                        document.querySelector("#search-popup").style.display =
+                          "none";
+                      }}
+                    >
+                      {" "}
+                      <i className="bi bi-search"></i>
+                      <img
+                        src={oneResult.image}
+                        className="profile-photo-search mx-1 "
+                        alt="profile"
+                      ></img>
+                      {oneResult.name} {oneResult.surname}
+                    </li>
+                    {!userProfileAPIRS.friends.includes(oneResult._id) ? (
+                      !userProfileAPIRS.sentRequests.includes(oneResult._id) ? (
+                        <h4
+                          onClick={() =>
+                            dispatch(
+                              sendUnsend(userProfileAPIRS._id, oneResult._id)
+                            )
+                          }
+                        >
+                          Send
+                        </h4>
+                      ) : (
+                        <h4
+                          onClick={() =>
+                            dispatch(
+                              sendUnsend(userProfileAPIRS._id, oneResult._id)
+                            )
+                          }
+                        >
+                          Unsend
+                        </h4>
+                      )
+                    ) : (
+                      <button
+                        onClick={dispatch(() =>
+                          friendUnfriend(userProfileAPIRS._id, oneResult._id)
+                        )}
+                        variant="danger"
+                      >
+                        Unfriend
+                      </button>
+                    )}
                   </>
                   // </Link>
                 ))}
-                    
             </div>
-       
           </Form>
 
-
-
-
-
-
-
-
-
-     
-
-   
           <Nav className="ml-auto ">
-          <Dropdown className="dropdowns"  >
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Friends
-      </Dropdown.Toggle>
+            <Dropdown className="dropdowns">
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Friends
+              </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-      
-          
-      {friends&& friends.map((fr)=>{
-          return  <Dropdown.Item  >     
+              <Dropdown.Menu>
+                {friends &&
+                  friends.map((fr) => {
+                    return (
+                      <Dropdown.Item>
+                        <small>
+                          {fr.name} {fr.surname}
+                        </small>
+                        <img
+                          style={{ height: "30px", borderRadius: "50%" }}
+                          src={fr.image}
+                          alt=""
+                        />
+                        <button
+                          onClick={() =>
+                            friendAndGet(userProfileAPIRS._id, fr._id)
+                          }
+                          variant="danger"
+                        >
+                          Unfriend
+                        </button>
+                      </Dropdown.Item>
+                    );
+                  })}
 
-         
-<small>{fr.name} {fr.surname}</small>
-  <img style={{height:"30px", borderRadius:"50%"}} src={fr.image} alt="" />
-  <button onClick={()=>friendAndGet(userProfileAPIRS._id,fr._id)} variant="danger">Unfriend</button>
+                {/* <Dropdown.Item>action</Dropdown.Item> */}
+              </Dropdown.Menu>
+            </Dropdown>
 
-
-            </Dropdown.Item>
-                       })}
-                
-           
-         
-           {/* <Dropdown.Item>action</Dropdown.Item> */}
-        
-    
-      </Dropdown.Menu>
-    </Dropdown>
-           <Dropdown className="dropdowns">
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Requests
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-       {reqs && reqs.map((req)=>{
-        if(userProfileAPIRS.friendRequests.includes(req._id)){
-            
-            return<>
-            <Dropdown.Item  ><small>{req.name} {req.surname}</small>
-            <br />
-            <img style={{height:"30px", borderRadius:"50%"}} src={req.image} alt="" />
-            <button onClick={()=>friendAndGet(userProfileAPIRS._id,req._id)} variant="primary">accept</button>
-            <button onClick={()=>declineAndGet(userProfileAPIRS._id,req._id)} variant="danger">Decline</button>
-            </Dropdown.Item>
-       
-                      </>
-           
- } })}
-           
-        
-    
-      </Dropdown.Menu>
-    </Dropdown>
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -355,24 +337,64 @@ const declineAndGet=async(id,sid)=>{
               </svg>
               <p className="text-gone">Messaging</p>
             </Nav.Link>
-            <Link
-              to={"/feed"}
-              className="text-center nav-link position-relative"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                data-supported-dps="24x24"
-                fill="currentColor"
-                className="mercado-match"
-                width="24"
-                height="24"
-              >
-                <path d="M22 19h-8.28a2 2 0 11-3.44 0H2v-1a4.52 4.52 0 011.17-2.83l1-1.17h15.7l1 1.17A4.42 4.42 0 0122 18zM18.21 7.44A6.27 6.27 0 0012 2a6.27 6.27 0 00-6.21 5.44L5 13h14z"></path>
-              </svg>
-              <div id="notification-number">3</div>
-              <p className="text-gone">Notifications</p>
-            </Link>
+            <Dropdown className="dropdowns">
+              <Dropdown.Toggle id="dropdown-notifications">
+                <Nav.Link>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    data-supported-dps="24x24"
+                    fill="currentColor"
+                    className="mercado-match"
+                    width="24"
+                    height="24"
+                  >
+                    <path d="M22 19h-8.28a2 2 0 11-3.44 0H2v-1a4.52 4.52 0 011.17-2.83l1-1.17h15.7l1 1.17A4.42 4.42 0 0122 18zM18.21 7.44A6.27 6.27 0 0012 2a6.27 6.27 0 00-6.21 5.44L5 13h14z"></path>
+                  </svg>
+                  <div id="notification-number">{reqs.length}</div>
+                  <p className="text-gone">Notifications</p>
+                </Nav.Link>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu id="#dropdown-menu-nav">
+                {reqs &&
+                  reqs.map((req) => {
+                    if (userProfileAPIRS.friendRequests.includes(req._id)) {
+                      return (
+                        <>
+                          <Dropdown.Item>
+                            <small>
+                              {req.name} {req.surname}
+                            </small>
+                            <br />
+                            <img
+                              style={{ height: "30px", borderRadius: "50%" }}
+                              src={req.image}
+                              alt=""
+                            />
+                            <button
+                              onClick={() =>
+                                friendAndGet(userProfileAPIRS._id, req._id)
+                              }
+                              variant="primary"
+                            >
+                              accept
+                            </button>
+                            <button
+                              onClick={() =>
+                                declineAndGet(userProfileAPIRS._id, req._id)
+                              }
+                              variant="danger"
+                            >
+                              Decline
+                            </button>
+                          </Dropdown.Item>
+                        </>
+                      );
+                    }
+                  })}
+              </Dropdown.Menu>
+            </Dropdown>
 
             <div href="#" className="profile-nav-wrapper">
               <img
