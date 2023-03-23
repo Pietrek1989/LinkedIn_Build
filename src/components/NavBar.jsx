@@ -29,7 +29,8 @@ const NavBar = () => {
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
   const reqs = useSelector((state) => state.Requests.allReqs)
   const friends=useSelector((state) => state.AllFriends.allFr)
-  console.log(useSelector((state) => state.AllFriends))
+
+
   const dispatch = useDispatch();
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -62,11 +63,44 @@ const NavBar = () => {
 
 useEffect(()=>{
   dispatch(getAllRequests(userProfileAPIRS._id))
-},[])
+},[userProfileAPIRS._id])
 useEffect(()=>{
   dispatch(getAllFriends(userProfileAPIRS._id))
   console.log(userProfileAPIRS._id)
-},[userProfileAPIRS._id])
+},[])
+
+
+const friendAndGet=async(id,sid)=>{
+try{
+await dispatch(friendUnfriend(id,sid))
+dispatch(getAllFriends(userProfileAPIRS._id))
+dispatch(getAllRequests(userProfileAPIRS._id))
+}catch(err){
+console.log(err)
+}
+
+
+console.log(friends)
+
+}
+
+const declineAndGet=async(id,sid)=>{
+  try{
+  await dispatch(decline(id,sid))
+  dispatch(getAllFriends(userProfileAPIRS._id))
+  dispatch(getAllRequests(userProfileAPIRS._id))
+  }catch(err){
+  console.log(err)
+  }
+  
+  
+  console.log(friends)
+  
+  }
+
+
+
+
   let allProfiles = useSelector((state) => state.profile.content);
   let searchArray = useSelector((state) => state.search.content[0]);
 
@@ -188,10 +222,6 @@ useEffect(()=>{
                     
                      <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,oneResult._id))} variant="danger">Unfriend</button>
                   )}
-                  {!userProfileAPIRS.sentRequests.includes(oneResult._id) ?  
-               
-               <h2 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Add</h2>
-             :  <h4 onClick={()=>dispatch(sendUnsend(userProfileAPIRS._id,oneResult._id))}>Remove</h4>}
                   </>
                   // </Link>
                 ))}
@@ -218,22 +248,22 @@ useEffect(()=>{
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-       {friends && friends.map((req)=>{
+      
           
-            return<>
-            <Dropdown.Item  >     {friends&& friends.map((fr)=>{
+      {friends&& friends.map((fr)=>{
+          return  <Dropdown.Item  >     
 
          
-  return <><small>{fr.name} {fr.surname}</small>
+<small>{fr.name} {fr.surname}</small>
   <img style={{height:"30px", borderRadius:"50%"}} src={fr.image} alt="" />
-  <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,fr._id))} variant="danger">Unfriend</button>
-  </>
-})}
+  <button onClick={()=>friendAndGet(userProfileAPIRS._id,fr._id)} variant="danger">Unfriend</button>
+
+
             </Dropdown.Item>
-                       
-                      </>
+                       })}
+                
            
-          })}
+         
            {/* <Dropdown.Item>action</Dropdown.Item> */}
         
     
@@ -249,9 +279,11 @@ useEffect(()=>{
         if(userProfileAPIRS.friendRequests.includes(req._id)){
             
             return<>
-            <Dropdown.Item  ><p>{req.name}</p>
-            <button onClick={dispatch(()=>friendUnfriend(userProfileAPIRS._id,req._id))} variant="primary">accept</button>
-            <button onClick={dispatch(()=>decline(userProfileAPIRS._id,req._id))} variant="danger">Decline</button>
+            <Dropdown.Item  ><small>{req.name} {req.surname}</small>
+            <br />
+            <img style={{height:"30px", borderRadius:"50%"}} src={req.image} alt="" />
+            <button onClick={()=>friendAndGet(userProfileAPIRS._id,req._id)} variant="primary">accept</button>
+            <button onClick={()=>declineAndGet(userProfileAPIRS._id,req._id)} variant="danger">Decline</button>
             </Dropdown.Item>
        
                       </>
