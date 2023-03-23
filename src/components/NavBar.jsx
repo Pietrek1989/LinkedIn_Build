@@ -74,7 +74,7 @@ const NavBar = () => {
   useEffect(() => {
     dispatch(getAllFriends(userProfileAPIRS._id));
     console.log(userProfileAPIRS._id);
-  }, []);
+  }, [userProfileAPIRS._id]);
 
   const friendAndGet = async (id, sid) => {
     try {
@@ -259,19 +259,23 @@ const NavBar = () => {
                           src={fr.image}
                           alt=""
                         />
-                        <button
+                        <Button
                           onClick={() =>
                             friendAndGet(userProfileAPIRS._id, fr._id)
                           }
-                          variant="danger"
+                      
+                          variant="outline-danger"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          id="profile-buttons"
                         >
                           Unfriend
-                        </button>
+                        </Button>
                       </Dropdown.Item>
                     );
                   })}
 
                 {/* <Dropdown.Item>action</Dropdown.Item> */}
+                <Dropdown.Item>        <p>Total:{friends.length} Friends</p></Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
@@ -371,24 +375,34 @@ const NavBar = () => {
                               src={req.image}
                               alt=""
                             />
-                            <button
+                            <Button
                               onClick={() =>
                                 friendAndGet(userProfileAPIRS._id, req._id)
                               }
-                              variant="primary"
+                             
+                              variant="outline-primary"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          id="profile-buttons"
                             >
                               accept
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                               onClick={() =>
                                 declineAndGet(userProfileAPIRS._id, req._id)
                               }
-                              variant="danger"
+                   
+                              variant="outline-danger"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          id="profile-buttons"
                             >
                               Decline
-                            </button>
+                            </Button>
                           </Dropdown.Item>
+                         
+                  
                         </>
+                        
+                     
                       );
                     }
                   })}
