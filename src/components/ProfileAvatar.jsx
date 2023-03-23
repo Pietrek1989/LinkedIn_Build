@@ -81,6 +81,14 @@ const ProfileAvatar = () => {
       });
   }
 
+  const showPopup = () => {
+    let popup = document.querySelector("#popup");
+    if (popup.style.display === "none") {
+      popup.style.display = "block";
+    } else {
+      popup.style.display = "none";
+    }
+  };
   return (
     <Row
       className="d-flex flex-column edit-section bg-white mr-2 mb-2"
@@ -301,10 +309,10 @@ const ProfileAvatar = () => {
           lg={6}
           className="d-flex justify-content-start d-none d-sm-flex mb-4"
         >
-          <Col className="px-1">
+          <Col className="px-2">
             <Button
               variant="primary"
-              className="d-flex justify-content-center align-items-center px-3"
+              className="d-flex justify-content-center align-items-center px-4"
               id="profile-buttons"
             >
               Open to
@@ -324,20 +332,66 @@ const ProfileAvatar = () => {
               variant="outline-secondary"
               className="d-flex justify-content-center align-items-center px-3"
               id="profile-buttons"
+              onClick={showPopup}
             >
               More
             </Button>
           </Col>
           <Col>
-            <Link to={`http://localhost:3001/api/pdf/${userProfileAPIRS._id}`}>
-              <Button
-                variant="outline-secondary"
-                className="d-flex justify-content-center align-items-center "
-                id="profile-buttons"
-              >
-                DOWNLOAD CV
-              </Button>
-            </Link>
+            <div id="popup" style={{ display: "none" }}>
+              <p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  data-supported-dps="24x24"
+                  fill="currentColor"
+                  className="mercado-match mr-1"
+                  width="24"
+                  height="24"
+                  focusable="false"
+                >
+                  <path d="M23 12l-4.61 7H16l4-6H8a3.92 3.92 0 00-4 3.84V17a4 4 0 00.19 1.24L5.12 21H3l-.73-2.22A6.4 6.4 0 012 16.94 6 6 0 018 11h12l-4-6h2.39z"></path>
+                </svg>
+                Send profile in a message
+              </p>
+              <p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  data-supported-dps="24x24"
+                  fill="currentColor"
+                  className="mercado-match"
+                  width="24"
+                  height="24"
+                  focusable="false"
+                >
+                  <path d="M21 14v5a3 3 0 01-3 3H6a3 3 0 01-3-3v-5h2v5a1 1 0 001 1h12a1 1 0 001-1v-5zm-4-.57V11l-4 2.85V3h-2v10.85L7 11v2.43L12 17z"></path>
+                </svg>
+                <Link
+                  to={`http://localhost:3001/api/pdf/${userProfileAPIRS._id}`}
+                  className="link-to-pdf"
+                >
+                  {" "}
+                  Download PDF
+                </Link>
+              </p>
+              <p>
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  data-supported-dps="24x24"
+                  fill="currentColor"
+                  class="mercado-match"
+                  width="24"
+                  height="24"
+                  focusable="false"
+                >
+                  <path d="M18 3H6a3 3 0 00-3 3v12a3 3 0 003 3h12a3 3 0 003-3V6a3 3 0 00-3-3zm-4 15h-1a3 3 0 01-3-3 3.22 3.22 0 01.1-.75L11.2 10h2.07L12 14.75A1 1 0 0013 16h1zm-1-9.75A1.25 1.25 0 1114.25 7 1.25 1.25 0 0113 8.25z"></path>
+                </svg>
+                About this Profile
+              </p>
+            </div>
           </Col>
         </Col>
       </Col>
