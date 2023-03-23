@@ -683,3 +683,31 @@ export const getAllComments = (postId) => {
     }
   };
 };
+
+export const deleteCommentAsyncAction = (singleComment) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_URL}/posts/${singleComment.post}/comments/${singleComment._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
+        dispatch(getPostAction());
+
+        //   const data = await res.json();
+        //   dispatch({
+        //     type: GET_COMMENTS,
+        //     payload: data,
+        //   });
+        // }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

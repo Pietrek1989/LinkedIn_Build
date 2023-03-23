@@ -5,6 +5,7 @@ import { RxLoop } from "react-icons/rx";
 import { IoIosSend } from "react-icons/io";
 import { AiTwotoneLike } from "react-icons/ai";
 import {
+  deleteCommentAsyncAction,
   getAllComments,
   getPostAction,
   getPostWithIdAction,
@@ -12,7 +13,7 @@ import {
   sendCommentAsyncAction,
   unlikeAction,
 } from "../redux/actions";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import "../styles/likeAndUnlike.css";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +48,18 @@ const LikeAndUnlike = (props) => {
     setShowCommentSection(!showCommentSection);
   };
 
+  const [successful, setSuccessful] = useState(false);
+  const handleCloseSuccessful = () => setSuccessful(false);
+  const handleShowSuccessful = () => setSuccessful(true);
+
+  const [deleted, setDeleted] = useState(false);
+  const handleCloseDeleted = () => setDeleted(false);
+  const handleShowDeleted = () => setDeleted(true);
+  const [notDeleted, setNotDeleted] = useState(false);
+  const handleCloseNotDeleted = () => setNotDeleted(false);
+  const handleShowNotDeleted = () => setNotDeleted(true);
+
+  console.log(props.singlePost.comments);
   return (
     <div className="card-footer p-0">
       <p className="likes-paragraph">
@@ -163,6 +176,7 @@ const LikeAndUnlike = (props) => {
                   className="add-comment-button"
                   onClick={() => {
                     dispatch(sendCommentAsyncAction(comment));
+                    handleShowSuccessful();
 
                     setComment({ user: "", comment: "", post: "" });
                     navigate("/feed");
@@ -213,6 +227,24 @@ const LikeAndUnlike = (props) => {
                         data-test-reactions-icon-theme="light"
                       />
                       <button className="comment-reply-button">Reply</button>
+                      <button
+                        className="comment-delete-button ml-auto mr-5"
+                        onClick={() => {
+                          if (
+                            singleComment.user._id === props.currentUser._id
+                          ) {
+                            dispatch(deleteCommentAsyncAction(singleComment));
+                            navigate("/feed");
+                            handleShowDeleted();
+                          } else {
+                            handleShowNotDeleted();
+                          }
+
+                          //   dispatch(getPostAction());
+                        }}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 );
@@ -220,6 +252,23 @@ const LikeAndUnlike = (props) => {
           </div>
         )}
       </div>
+      <Modal show={successful} onHide={handleCloseSuccessful}>
+        <Alert variant="success" className="text-center">
+          Successfully Posted !!
+        </Alert>
+      </Modal>
+
+      {/* Deleted Modal */}
+      <Modal show={deleted} onHide={handleCloseDeleted}>
+        <Alert variant="warning" className="text-center">
+          Deleted
+        </Alert>
+      </Modal>
+      <Modal show={notDeleted} onHide={handleCloseNotDeleted}>
+        <Alert variant="warning" className="text-center">
+          You can only delete your posts!
+        </Alert>
+      </Modal>
     </div>
   );
 };

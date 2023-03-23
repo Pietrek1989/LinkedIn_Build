@@ -146,3 +146,7 @@
 .modal-content .input-group span {
   width: 7em;
 }
+
+.alert {
+  margin-bottom: 0 !important;
+}

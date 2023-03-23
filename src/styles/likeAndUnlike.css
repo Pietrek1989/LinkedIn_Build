@@ -133,3 +133,7 @@
 .likes-paragraph span {
   font-size: 1em;
 }
+
+.comment-delete-button:hover {
+  color: red !important;
+}
