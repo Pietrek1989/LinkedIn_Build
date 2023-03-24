@@ -62,7 +62,7 @@ const ProfileAvatar = () => {
   const handleShowSuccessful = () => setSuccessful(true);
 
   const combinedFunction = () => {
-    dispatch(putUserProfileApi());
+    dispatch(putUserProfileApi(userProfileAPIRS._id));
     handleClosePen();
   };
 

@@ -23,11 +23,11 @@ export const LIKE = "LIKE";
 export const UNLIKE = "UNLIKE";
 export const TOGGLE_SHOW = "TOGGLE_SHOW";
 export const GET_COMMENTS = "GET_COMMENTS";
-export const RECIEVE="RECIEVE"
-export const FRIEND="FRIEND"
-export const GET_ALL_REQS="GET_ALL_REQS"
-export const DECLINE="DECLINE"
-export const GET_ALL_FRIENDS="GET_ALL_FRIENDS"
+export const RECIEVE = "RECIEVE";
+export const FRIEND = "FRIEND";
+export const GET_ALL_REQS = "GET_ALL_REQS";
+export const DECLINE = "DECLINE";
+export const GET_ALL_FRIENDS = "GET_ALL_FRIENDS";
 const options = {
   method: "GET",
 };
@@ -76,7 +76,7 @@ export const getUserProfileApi = () => {
   };
 };
 
-export const putUserProfileApi = () => {
+export const putUserProfileApi = (id) => {
   const nameInput = document.getElementById("change-name");
   const surnameInput = document.getElementById("change-surname");
   const emailInput = document.getElementById("change-email");
@@ -105,7 +105,7 @@ export const putUserProfileApi = () => {
   };
 
   return async (dispatch, getState) => {
-    const baseEndpoint = `${process.env.REACT_APP_URL}/users`;
+    const baseEndpoint = `${process.env.REACT_APP_URL}/users/${id}`;
 
     try {
       let resp = await fetch(baseEndpoint, optionsPUT);
@@ -688,117 +688,119 @@ export const getAllComments = (postId) => {
   };
 };
 
-export const sendUnsend=(senderId,RecieverId)=>{
-  return async(dispatch,getState)=>{
-    try{
-      const res=await fetch(`${process.env.REACT_APP_URL}/users/${senderId}/friendRequest/${RecieverId}`,{
-        method: "PUT",
-      }
+export const sendUnsend = (senderId, RecieverId) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_URL}/users/${senderId}/friendRequest/${RecieverId}`,
+        {
+          method: "PUT",
+        }
+      );
 
-      )
-      
-      console.log(res)
-      if(res.ok){
-        const data = await res.json()
-    
+      console.log(res);
+      if (res.ok) {
+        const data = await res.json();
+
         dispatch({
           type: RECIEVE,
           payload: data,
-        })
-        
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
-    }catch(err){
-      console.log(err)
+  };
+};
+export const friendUnfriend = (senderId, RecieverId) => {
+  return async (dispatch, getState) => {
+    try {
+      const url = `${process.env.REACT_APP_URL}/users/${senderId}/friendUnfriend/${RecieverId}`;
+      const res = await fetch(url, {
+        method: "PUT",
+      });
+      if (res.ok) {
+        const data = await res.json();
+
+        dispatch({
+          type: FRIEND,
+          payload: data,
+        });
+        console.log("friendUnfrie3nd");
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }
-}
-export const friendUnfriend=(senderId,RecieverId)=>{
-  return async(dispatch,getState)=>{
-   try{
-    const url=`${process.env.REACT_APP_URL}/users/${senderId}/friendUnfriend/${RecieverId}`
-    const res= await fetch(url,{
-      method: "PUT",
-    })
-    if(res.ok){
-      const data = await res.json()
-      
-      dispatch({
-        type: FRIEND,
-        payload: data,
-      })
-      console.log("friendUnfrie3nd")
-  }
-   }catch(err){
-    console.log(err)
-   }
-  }
-}
+  };
+};
 
+export const getAllRequests = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_URL}/users/${userId}/friendReqs`
+      );
 
-export const getAllRequests=(userId)=>{
-  return async(dispatch,getState)=>{
-    try{
-      const res= await fetch(`${process.env.REACT_APP_URL}/users/${userId}/friendReqs`)
-
-     console.log("hello")
-      if(res.ok){
-        const data = await res.json()
-       const reqs=data.friendRequests
+      console.log("hello");
+      if (res.ok) {
+        const data = await res.json();
+        const reqs = data.friendRequests;
         dispatch({
           type: GET_ALL_REQS,
           payload: reqs,
-        })
-        console.log("data",reqs)
-    }
-    }catch(err){
-      console.log(err)
-    }
-  }
-}
-
-
-export const decline=(senderId,RecieverId)=>{
-  return async(dispatch,getState)=>{
-    try{
-      const res=await fetch(`${process.env.REACT_APP_URL}/users/${senderId}/decline/${RecieverId}`,{
-        method: "PUT",
+        });
+        console.log("data", reqs);
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
 
-      )
-      console.log(res)
-      if(res.ok){
-        const data = await res.json()
-    
+export const decline = (senderId, RecieverId) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_URL}/users/${senderId}/decline/${RecieverId}`,
+        {
+          method: "PUT",
+        }
+      );
+      console.log(res);
+      if (res.ok) {
+        const data = await res.json();
+
         dispatch({
           type: DECLINE,
           payload: data,
-        })
-        
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
-    }catch(err){
-      console.log(err)
-    }
-  }
-}
+  };
+};
 
-export const getAllFriends=(userId)=>{
-  return async(dispatch,getState)=>{
-    try{
-      const res= await fetch(`${process.env.REACT_APP_URL}/users/${userId}/friends`)
-      if(res.ok){
-        const data = await res.json()
-       const friends=data.friends
+export const getAllFriends = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_URL}/users/${userId}/friends`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        const friends = data.friends;
         dispatch({
           type: GET_ALL_FRIENDS,
           payload: friends,
-        })
-        console.log("friends",friends)
+        });
+        console.log("friends", friends);
+      }
+    } catch (err) {
+      console.log(err);
     }
-    }catch(err){
-      console.log(err)
-    }
-  }
-}
+  };
+};
 export const deleteCommentAsyncAction = (singleComment) => {
   return async (dispatch, getState) => {
     try {
