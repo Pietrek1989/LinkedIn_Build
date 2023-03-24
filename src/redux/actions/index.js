@@ -318,29 +318,32 @@ export const postUserExperience = (query, query2, file) => {
         });
         console.log(data.id);
         dispatch(handleUploadActionExp(data.id, query, file));
-        dispatch(getUserbyId(query));
       }
     } catch (error) {
       console.log(error);
     }
   };
 };
-function handleUploadActionExp(expId, userProfileAPIRS, file) {
-  const baseURL = `${process.env.REACT_APP_URL}/users/${userProfileAPIRS}/experiences/${expId}/image`;
-  const formData = new FormData();
-  formData.append("image", file);
-  fetch(baseURL, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log("You've uploaded your profile pic!", result);
+
+export const handleUploadActionExp = (expId, userProfileAPIRS, file) => {
+  return (dispatch, getState) => {
+    const baseURL = `${process.env.REACT_APP_URL}/users/${userProfileAPIRS}/experiences/${expId}/image`;
+    const formData = new FormData();
+    formData.append("image", file);
+    fetch(baseURL, {
+      method: "POST",
+      body: formData,
     })
-    .catch((error) => {
-      console.error("Problem uploading the image :(", error);
-    });
-}
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("You've uploaded your profile pic!", result);
+        dispatch(getExperienceAction(userProfileAPIRS));
+      })
+      .catch((error) => {
+        console.error("Problem uploading the image :(", error);
+      });
+  };
+};
 
 export const deleteSpecificExperienceAction = (query, expId) => {
   return async (dispatch, getState) => {
