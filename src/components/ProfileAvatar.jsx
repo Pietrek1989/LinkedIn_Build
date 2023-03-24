@@ -20,6 +20,7 @@ import {
   getAllFriends,
   getAllRequests,
   getCvAction,
+  getUserbyId,
   putUserProfileApi,
 } from "../redux/actions";
 import "../styles/profileDiv.css";
@@ -93,6 +94,7 @@ const ProfileAvatar = () => {
       .then((result) => {
         console.log("You've uploaded your profile pic!", result);
         setChanged(true);
+        dispatch(getUserbyId(userProfileAPIRS._id));
       })
       .catch((error) => {
         console.error("Problem uploading the image :(", error);
