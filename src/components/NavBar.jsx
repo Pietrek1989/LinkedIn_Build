@@ -225,10 +225,10 @@ const NavBar = () => {
                       >
                         <Button
                           variant="outline-primary"
-                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2 m-auto"
                           id="profile-buttons"
                         >
-                          Send friend Requests
+                          Send friend Request
                         </Button>
                       </h4>
                     ) : (
@@ -241,44 +241,6 @@ const NavBar = () => {
           </Form>
 
           <Nav className="ml-auto ">
-            <Dropdown className="dropdowns">
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Friends
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                {friends &&
-                  friends.map((fr) => {
-                    return (
-                      <Dropdown.Item>
-                        <small>
-                          {fr.name} {fr.surname}
-                        </small>
-                        <img
-                          style={{ height: "30px", borderRadius: "50%" }}
-                          src={fr.image}
-                          alt=""
-                        />
-                        <Button
-                          onClick={() =>
-                            friendAndGet(userProfileAPIRS._id, fr._id)
-                          }
-                      
-                          variant="outline-danger"
-                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
-                          id="profile-buttons"
-                        >
-                          Unfriend
-                        </Button>
-                      </Dropdown.Item>
-                    );
-                  })}
-
-                {/* <Dropdown.Item>action</Dropdown.Item> */}
-                <Dropdown.Item>        <p>Total:{friends.length} Friends</p></Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-
             <Link to={"/feed"} className="text-center nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -379,10 +341,9 @@ const NavBar = () => {
                               onClick={() =>
                                 friendAndGet(userProfileAPIRS._id, req._id)
                               }
-                             
                               variant="outline-primary"
-                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
-                          id="profile-buttons"
+                              className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                              id="profile-buttons"
                             >
                               accept
                             </Button>
@@ -390,19 +351,14 @@ const NavBar = () => {
                               onClick={() =>
                                 declineAndGet(userProfileAPIRS._id, req._id)
                               }
-                   
                               variant="outline-danger"
-                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
-                          id="profile-buttons"
+                              className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                              id="profile-buttons"
                             >
                               Decline
                             </Button>
                           </Dropdown.Item>
-                         
-                  
                         </>
-                        
-                     
                       );
                     }
                   })}

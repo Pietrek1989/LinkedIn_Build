@@ -1,13 +1,27 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Image, Row, Col, Modal, Alert } from "react-bootstrap";
+import {
+  Button,
+  Image,
+  Row,
+  Col,
+  Modal,
+  Alert,
+  Dropdown,
+} from "react-bootstrap";
 import { AiFillCamera } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { RiGalleryFill } from "react-icons/ri";
 import { ImBin } from "react-icons/im";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { getCvAction, putUserProfileApi } from "../redux/actions";
+import {
+  friendUnfriend,
+  getAllFriends,
+  getAllRequests,
+  getCvAction,
+  putUserProfileApi,
+} from "../redux/actions";
 import "../styles/profileDiv.css";
 import { getUserProfileApi } from "../redux/actions";
 import { FiSend } from "react-icons/fi";
@@ -16,6 +30,8 @@ import { Link } from "react-router-dom";
 
 const ProfileAvatar = () => {
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
+  const friends = useSelector((state) => state.AllFriends.allFr);
+
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   // const [showPic, setShowPic] = useState(false);
@@ -92,6 +108,48 @@ const ProfileAvatar = () => {
       popup.style.display = "none";
     }
   };
+
+  useEffect(() => {
+    dispatch(getAllRequests(userProfileAPIRS._id));
+  }, [userProfileAPIRS._id]);
+  useEffect(() => {
+    dispatch(getAllFriends(userProfileAPIRS._id));
+    console.log(userProfileAPIRS._id);
+  }, [userProfileAPIRS._id]);
+
+  const friendAndGet = async (id, sid) => {
+    try {
+      await dispatch(friendUnfriend(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+      dispatch(getAllRequests(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log(friends);
+  };
+
+  // const declineAndGet = async (id, sid) => {
+  //   try {
+  //     await dispatch(decline(id, sid));
+  //     dispatch(getAllFriends(userProfileAPIRS._id));
+  //     dispatch(getAllRequests(userProfileAPIRS._id));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  //   console.log(friends);
+  // };
+
+  // const sendAndGet = async (id, sid) => {
+  //   try {
+  //     await dispatch(sendUnsend(id, sid));
+  //     dispatch(getAllFriends(userProfileAPIRS._id));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   return (
     <Row
       className="d-flex flex-column edit-section bg-white mr-2 mb-2"
@@ -293,7 +351,45 @@ const ProfileAvatar = () => {
             <p className="mb-0">
               Contact Info: {userProfileAPIRS && userProfileAPIRS.email}
             </p>
-            <p>Connections</p>
+            <Dropdown className="dropdowns">
+              <Dropdown.Toggle id="dropdown-toggle-connections">
+                Connections
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {friends &&
+                  friends.map((fr) => {
+                    return (
+                      <Dropdown.Item>
+                        <small>
+                          {fr.name} {fr.surname}
+                        </small>
+                        <img
+                          style={{ height: "30px", borderRadius: "50%" }}
+                          src={fr.image}
+                          alt=""
+                        />
+                        <Button
+                          onClick={() =>
+                            friendAndGet(userProfileAPIRS._id, fr._id)
+                          }
+                          variant="outline-danger"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                          id="profile-buttons"
+                        >
+                          Unfriend
+                        </Button>
+                      </Dropdown.Item>
+                    );
+                  })}
+
+                {/* <Dropdown.Item>action</Dropdown.Item> */}
+                <Dropdown.Item>
+                  {" "}
+                  <p>Total:{friends.length} Friends</p>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Col>
           <Col xs={4} md={6} lg={4} className="mt-4 ">
             <div className="d-flex justify-content-center align-items-center">

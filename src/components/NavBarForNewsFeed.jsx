@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserbyId, toggleShow } from "../redux/actions";
+import {
+  decline,
+  friendUnfriend,
+  getAllFriends,
+  getAllRequests,
+  getUserbyId,
+  sendUnsend,
+  toggleShow,
+} from "../redux/actions";
 import {
   getAllProfileActionAsync,
   getSearchResultActionAsync,
@@ -17,6 +25,7 @@ import {
   Button,
   Row,
   Col,
+  Dropdown,
 } from "react-bootstrap";
 import { getUserProfileApi } from "../redux/actions";
 import { Link } from "react-router-dom";
@@ -24,6 +33,8 @@ import { Link } from "react-router-dom";
 const NavBarForNewsFeed = () => {
   const [searchValue, getSearchValue] = useState("");
   const userProfileAPIRS = useSelector((state) => state.userDataAPI.stock);
+  const reqs = useSelector((state) => state.Requests.allReqs);
+  const friends = useSelector((state) => state.AllFriends.allFr);
   const dispatch = useDispatch();
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -54,6 +65,47 @@ const NavBarForNewsFeed = () => {
   };
   const handleToggleShow = () => {
     dispatch(toggleShow());
+  };
+
+  useEffect(() => {
+    dispatch(getAllRequests(userProfileAPIRS._id));
+  }, [userProfileAPIRS._id]);
+  useEffect(() => {
+    dispatch(getAllFriends(userProfileAPIRS._id));
+    console.log(userProfileAPIRS._id);
+  }, [userProfileAPIRS._id]);
+
+  const friendAndGet = async (id, sid) => {
+    try {
+      await dispatch(friendUnfriend(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+      dispatch(getAllRequests(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log(friends);
+  };
+
+  const declineAndGet = async (id, sid) => {
+    try {
+      await dispatch(decline(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+      dispatch(getAllRequests(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log(friends);
+  };
+
+  const sendAndGet = async (id, sid) => {
+    try {
+      await dispatch(sendUnsend(id, sid));
+      dispatch(getAllFriends(userProfileAPIRS._id));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // search function
@@ -105,28 +157,53 @@ const NavBarForNewsFeed = () => {
               value={searchValue}
               onChange={(e) => getSearchValue(e.target.value)}
             />
+
             <div id="search-popup" className="position-absolute w-100">
               {searchArray &&
                 searchArray.map((oneResult) => (
                   // <Link to={"/:oneResult.id"}>
-                  <li
-                    className="py-2"
-                    key={oneResult._id}
-                    onClick={() => {
-                      dispatch(getUserbyId(oneResult._id));
-                      document.querySelector("#search-popup").style.display =
-                        "none";
-                    }}
-                  >
-                    {" "}
-                    <i className="bi bi-search"></i>
-                    <img
-                      src={oneResult.image}
-                      className="profile-photo-search mx-1 "
-                      alt="profile"
-                    ></img>
-                    {oneResult.name} {oneResult.surname}
-                  </li>
+                  <>
+                    <li
+                      className="py-2"
+                      key={oneResult._id}
+                      onClick={() => {
+                        dispatch(getUserbyId(oneResult._id));
+                        document.querySelector("#search-popup").style.display =
+                          "none";
+                      }}
+                    >
+                      {" "}
+                      <i className="bi bi-search"></i>
+                      <img
+                        src={oneResult.image}
+                        className="profile-photo-search mx-1 "
+                        alt="profile"
+                      ></img>
+                      {oneResult.name} {oneResult.surname}
+                    </li>
+                    {userProfileAPIRS._id.includes(oneResult._id) ? (
+                      ""
+                    ) : !oneResult.friendRequests.includes(
+                        userProfileAPIRS._id
+                      ) && !userProfileAPIRS.friends.includes(oneResult._id) ? (
+                      <h4
+                        onClick={() =>
+                          sendAndGet(userProfileAPIRS._id, oneResult._id)
+                        }
+                        className="m-auto"
+                      >
+                        <Button
+                          variant="outline-primary"
+                          className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2 m-auto"
+                          id="profile-buttons"
+                        >
+                          Send friend Request
+                        </Button>
+                      </h4>
+                    ) : (
+                      ""
+                    )}
+                  </>
                   // </Link>
                 ))}
             </div>
@@ -192,24 +269,68 @@ const NavBarForNewsFeed = () => {
               </svg>
               <p className="text-gone">Messaging</p>
             </Nav.Link>
-            <Link
-              to={"/feed"}
-              className="text-center nav-link position-relative"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                data-supported-dps="24x24"
-                fill="currentColor"
-                className="mercado-match"
-                width="24"
-                height="24"
-              >
-                <path d="M22 19h-8.28a2 2 0 11-3.44 0H2v-1a4.52 4.52 0 011.17-2.83l1-1.17h15.7l1 1.17A4.42 4.42 0 0122 18zM18.21 7.44A6.27 6.27 0 0012 2a6.27 6.27 0 00-6.21 5.44L5 13h14z"></path>
-              </svg>
-              <div id="notification-number">3</div>
-              <p className="text-gone">Notifications</p>
-            </Link>
+            <Dropdown className="dropdowns">
+              <Dropdown.Toggle id="dropdown-notifications">
+                <Nav.Link>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    data-supported-dps="24x24"
+                    fill="currentColor"
+                    className="mercado-match"
+                    width="24"
+                    height="24"
+                  >
+                    <path d="M22 19h-8.28a2 2 0 11-3.44 0H2v-1a4.52 4.52 0 011.17-2.83l1-1.17h15.7l1 1.17A4.42 4.42 0 0122 18zM18.21 7.44A6.27 6.27 0 0012 2a6.27 6.27 0 00-6.21 5.44L5 13h14z"></path>
+                  </svg>
+                  <div id="notification-number">{reqs.length}</div>
+                  <p className="text-gone">Notifications</p>
+                </Nav.Link>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu id="#dropdown-menu-nav">
+                {reqs &&
+                  reqs.map((req) => {
+                    if (userProfileAPIRS.friendRequests.includes(req._id)) {
+                      return (
+                        <>
+                          <Dropdown.Item>
+                            <small>
+                              {req.name} {req.surname}
+                            </small>
+                            <br />
+                            <img
+                              style={{ height: "30px", borderRadius: "50%" }}
+                              src={req.image}
+                              alt=""
+                            />
+                            <Button
+                              onClick={() =>
+                                friendAndGet(userProfileAPIRS._id, req._id)
+                              }
+                              variant="outline-primary"
+                              className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                              id="profile-buttons"
+                            >
+                              accept
+                            </Button>
+                            <Button
+                              onClick={() =>
+                                declineAndGet(userProfileAPIRS._id, req._id)
+                              }
+                              variant="outline-danger"
+                              className="d-flex justify-content-center align-items-center text-truncate px-3 mb-2"
+                              id="profile-buttons"
+                            >
+                              Decline
+                            </Button>
+                          </Dropdown.Item>
+                        </>
+                      );
+                    }
+                  })}
+              </Dropdown.Menu>
+            </Dropdown>
 
             <div href="#" className="profile-nav-wrapper">
               <Link to={"/"}>

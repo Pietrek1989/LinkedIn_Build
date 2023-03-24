@@ -78,3 +78,8 @@
   text-decoration: none;
   color: #4f4f4f;
 }
+#dropdown-toggle-connections {
+  background-color: transparent;
+  box-shadow: none;
+  color: #3265b9;
+}
