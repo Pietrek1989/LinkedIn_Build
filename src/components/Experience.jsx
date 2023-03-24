@@ -280,8 +280,8 @@ const Experience = () => {
             onClick={() => {
               dispatch(
                 postUserExperience(
-                  userExperiencesAPIRS._id,
                   userProfileAPIRS._id,
+                  userExperiencesAPIRS._id,
                   file
                 )
               );

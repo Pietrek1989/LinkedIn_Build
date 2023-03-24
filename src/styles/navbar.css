@@ -370,6 +370,7 @@
   align-items: center !important;
   margin-inline: 0.4rem !important;
   margin-top: 5px !important;
+  padding-inline: 0.5em !important;
 }
 .navbar-nav .nav-link p {
   font-size: 0.9rem;
@@ -815,7 +816,6 @@
 }
 .dropdowns {
   margin-top: 2em;
-  margin-right: 1em;
   color: transparent;
 }
 
@@ -826,7 +826,7 @@
   max-height: 35px;
   padding: 0;
   margin: 0;
-  text-transform: lowercase;
+  text-transform: capitalize;
   overflow: hidden;
   padding-bottom: 50px;
   margin-bottom: 33px;

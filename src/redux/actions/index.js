@@ -316,8 +316,9 @@ export const postUserExperience = (query, query2, file) => {
           type: GET_POSTS_WITH_ID,
           payload: data.id,
         });
-        dispatch(getUserProfileApi());
-        dispatch(handleUploadActionExp(data._id, query2, file));
+        console.log(data.id);
+        dispatch(handleUploadActionExp(data.id, query, file));
+        dispatch(getUserbyId(query));
       }
     } catch (error) {
       console.log(error);
@@ -327,7 +328,7 @@ export const postUserExperience = (query, query2, file) => {
 function handleUploadActionExp(expId, userProfileAPIRS, file) {
   const baseURL = `${process.env.REACT_APP_URL}/users/${userProfileAPIRS}/experiences/${expId}/image`;
   const formData = new FormData();
-  formData.append("experience", file);
+  formData.append("image", file);
   fetch(baseURL, {
     method: "POST",
     body: formData,
@@ -358,7 +359,7 @@ export const deleteSpecificExperienceAction = (query, expId) => {
           type: DELETE_EXPERIENCE,
           payload: data,
         });
-        dispatch(getUserProfileApi());
+        dispatch(getUserbyId(query));
       }
     } catch (error) {
       console.log(error);
@@ -404,6 +405,7 @@ export const putUserExperience = (query, expId) => {
           type: PUT_USER_EXPERIENCE_UPDATE,
           payload: editedData,
         });
+        dispatch(getUserbyId(query));
       }
     } catch (error) {
       console.log(error);
