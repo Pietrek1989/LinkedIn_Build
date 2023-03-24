@@ -290,8 +290,11 @@ const NewsFeedMiddle = () => {
                         </div>
                       )}
                     </div>
+                    {userProfileAPIRS._id===singlePost.user._id?
                     <div className="parent-button-delete-post d-flex justify-content-end">
                       <div className="text-center">
+                        
+                        
                         <Button
                           className="button-edit-post pl-3 mb-3"
                           onClick={() => navigate(`/posts/${singlePost._id}`)}
@@ -300,6 +303,7 @@ const NewsFeedMiddle = () => {
                         </Button>
                       </div>
                       <div className="text-center">
+                    
                         <Button
                           className="button-delete-post pl-3 mb-3"
                           onClick={() => {
@@ -313,8 +317,10 @@ const NewsFeedMiddle = () => {
                         >
                           <i className="bi bi-trash3-fill"></i>
                         </Button>
+          
                       </div>
                     </div>
+                 :""}
                     <LikeAndUnlike
                       singlePost={singlePost}
                       i={i}
