@@ -85,7 +85,7 @@ const NewsFeedEditPage = () => {
                   // console.log(feedData._id);
                   console.log(file);
                   dispatch(putPostAction(params.id));
-                  handleUploadAction(params.id, file);
+                  dispatch(handleUploadAction(params.id, file));
                   alert("Successfully Edited");
                   navigate("/feed");
                 }}

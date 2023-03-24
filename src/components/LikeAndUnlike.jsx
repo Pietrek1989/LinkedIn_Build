@@ -59,7 +59,6 @@ const LikeAndUnlike = (props) => {
   const handleCloseNotDeleted = () => setNotDeleted(false);
   const handleShowNotDeleted = () => setNotDeleted(true);
 
-  console.log(props.singlePost.comments);
   return (
     <div className="card-footer p-0">
       <p className="likes-paragraph">

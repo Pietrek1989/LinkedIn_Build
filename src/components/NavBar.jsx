@@ -327,7 +327,7 @@ const NavBar = () => {
                     if (userProfileAPIRS.friendRequests.includes(req._id)) {
                       return (
                         <>
-                          <Dropdown.Item>
+                          <Dropdown.Item key={req._id}>
                             <small>
                               {req.name} {req.surname}
                             </small>
